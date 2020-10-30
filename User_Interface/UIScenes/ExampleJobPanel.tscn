@@ -1,0 +1,194 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Panel
+
+var workerCount
+var progressBar 
+var workerName
+var fireButton
+var hireButton
+var currentJob:ProvidesWorkingSpace = null
+
+func setUpJob(job:ProvidesWorkingSpace):
+	workerCount = get_node(\"JobPanelBackgroundInner/JobPanelBackgroundInnerGrid/DiscriptionPanelBackground/DiscriptionPanelBackGroundGrid/JobInfo/GridContainer2/workerCount\")
+	progressBar = get_node(\"JobPanelBackgroundInner/JobPanelBackgroundInnerGrid/DiscriptionPanelBackground/DiscriptionPanelBackGroundGrid/JobInfo/GridContainer2/ProgressBar\")
+	workerName = get_node(\"JobPanelBackgroundInner/JobPanelBackgroundInnerGrid/DiscriptionPanelBackground/DiscriptionPanelBackGroundGrid/WoekerInfo/GridContainer/WorkerNameLabel\")
+	fireButton = get_node(\"JobPanelBackgroundInner/JobPanelBackgroundInnerGrid/DiscriptionPanelBackground/DiscriptionPanelBackGroundGrid/WoekerInfo/GridContainer/Fire\")
+	hireButton = get_node(\"JobPanelBackgroundInner/JobPanelBackgroundInnerGrid/HireWorker\")
+	get_node(\"JobPanelBackgroundInner/JobPanelBackgroundInnerGrid/DiscriptionPanelBackground/DiscriptionPanelBackGroundGrid/JobInfo/GridContainer2/JobName\").text = job.JobName
+	
+	UpdateWork(job)
+		
+	currentJob = job
+	
+func UpdateWork(job:ProvidesWorkingSpace):
+	if job.WorkingCitizens.size() > 0:
+		workerName.text = \"Name\"
+		fireButton.visible = true
+	else:
+		workerName.text = \"---\"
+		fireButton.visible = false
+		
+	hireButton.visible = job.WorkingCitizens.size() < job.maxJobs
+
+func setProgress():
+	progressBar.value = currentJob.getEfficency()
+	workerCount.text = str(currentJob.WorkingCitizens.size()) + \" / \" +str(currentJob.maxJobs)
+
+func _on_HireWorker_pressed():
+	UiLibData.HireScreen.HireWorker(self,currentJob)
+
+func _on_Fire_pressed():
+	
+	var remover = currentJob.WorkingCitizens[currentJob.WorkingCitizens.size()-1]
+	
+	var workForce = remover.getFirstPartOrDefault(\"CanWork\")
+	workForce.Fired()
+	
+	currentJob.RemoveFromJob(remover)
+	
+	UpdateWork(currentJob)
+"
+
+[node name="ExampleJobPanelBackground" type="Panel"]
+self_modulate = Color( 0.603922, 0.603922, 0.603922, 1 )
+margin_right = 609.0
+margin_bottom = 50.0
+rect_min_size = Vector2( 0, 50 )
+size_flags_horizontal = 3
+script = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="JobPanelBackgroundInner" type="Panel" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 3.0
+margin_top = 3.0
+margin_right = -3.0
+margin_bottom = -3.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="JobPanelBackgroundInnerGrid" type="GridContainer" parent="JobPanelBackgroundInner"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 1.0
+margin_top = 1.0
+margin_right = -1.0
+margin_bottom = -1.0
+columns = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="DiscriptionPanelBackground" type="Panel" parent="JobPanelBackgroundInner/JobPanelBackgroundInnerGrid"]
+self_modulate = Color( 0.854902, 0.854902, 0.854902, 1 )
+margin_right = 522.0
+margin_bottom = 42.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="DiscriptionPanelBackGroundGrid" type="GridContainer" parent="JobPanelBackgroundInner/JobPanelBackgroundInnerGrid/DiscriptionPanelBackground"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="JobInfo" type="Panel" parent="JobPanelBackgroundInner/JobPanelBackgroundInnerGrid/DiscriptionPanelBackground/DiscriptionPanelBackGroundGrid"]
+self_modulate = Color( 0.854902, 0.854902, 0.854902, 1 )
+margin_right = 522.0
+margin_bottom = 18.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="GridContainer2" type="GridContainer" parent="JobPanelBackgroundInner/JobPanelBackgroundInnerGrid/DiscriptionPanelBackground/DiscriptionPanelBackGroundGrid/JobInfo"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 13.0
+margin_right = -8.0
+columns = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="JobName" type="Label" parent="JobPanelBackgroundInner/JobPanelBackgroundInnerGrid/DiscriptionPanelBackground/DiscriptionPanelBackGroundGrid/JobInfo/GridContainer2"]
+margin_right = 228.0
+margin_bottom = 14.0
+size_flags_horizontal = 3
+text = "JobName"
+
+[node name="VSeparator" type="VSeparator" parent="JobPanelBackgroundInner/JobPanelBackgroundInnerGrid/DiscriptionPanelBackground/DiscriptionPanelBackGroundGrid/JobInfo/GridContainer2"]
+margin_left = 232.0
+margin_right = 236.0
+margin_bottom = 14.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="workerCount" type="Label" parent="JobPanelBackgroundInner/JobPanelBackgroundInnerGrid/DiscriptionPanelBackground/DiscriptionPanelBackGroundGrid/JobInfo/GridContainer2"]
+margin_left = 240.0
+margin_right = 261.0
+margin_bottom = 14.0
+text = "0/0"
+
+[node name="VSeparator3" type="VSeparator" parent="JobPanelBackgroundInner/JobPanelBackgroundInnerGrid/DiscriptionPanelBackground/DiscriptionPanelBackGroundGrid/JobInfo/GridContainer2"]
+margin_left = 265.0
+margin_right = 269.0
+margin_bottom = 14.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ProgressBar" type="ProgressBar" parent="JobPanelBackgroundInner/JobPanelBackgroundInnerGrid/DiscriptionPanelBackground/DiscriptionPanelBackGroundGrid/JobInfo/GridContainer2"]
+margin_left = 273.0
+margin_right = 501.0
+margin_bottom = 14.0
+size_flags_horizontal = 3
+
+[node name="WoekerInfo" type="Panel" parent="JobPanelBackgroundInner/JobPanelBackgroundInnerGrid/DiscriptionPanelBackground/DiscriptionPanelBackGroundGrid"]
+self_modulate = Color( 0.854902, 0.854902, 0.854902, 1 )
+margin_top = 22.0
+margin_right = 522.0
+margin_bottom = 40.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="GridContainer" type="GridContainer" parent="JobPanelBackgroundInner/JobPanelBackgroundInnerGrid/DiscriptionPanelBackground/DiscriptionPanelBackGroundGrid/WoekerInfo"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 13.0
+margin_right = -8.0
+columns = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="WorkerNameLabel" type="Label" parent="JobPanelBackgroundInner/JobPanelBackgroundInnerGrid/DiscriptionPanelBackground/DiscriptionPanelBackGroundGrid/WoekerInfo/GridContainer"]
+margin_top = 3.0
+margin_right = 424.0
+margin_bottom = 17.0
+size_flags_horizontal = 3
+text = "Name of Worker"
+
+[node name="Fire" type="Button" parent="JobPanelBackgroundInner/JobPanelBackgroundInnerGrid/DiscriptionPanelBackground/DiscriptionPanelBackGroundGrid/WoekerInfo/GridContainer"]
+margin_left = 428.0
+margin_right = 501.0
+margin_bottom = 20.0
+text = "Entlassen"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HireWorker" type="Button" parent="JobPanelBackgroundInner/JobPanelBackgroundInnerGrid"]
+margin_left = 526.0
+margin_right = 601.0
+margin_bottom = 42.0
+text = "Einstellen"
+[connection signal="pressed" from="JobPanelBackgroundInner/JobPanelBackgroundInnerGrid/DiscriptionPanelBackground/DiscriptionPanelBackGroundGrid/WoekerInfo/GridContainer/Fire" to="." method="_on_Fire_pressed"]
+[connection signal="pressed" from="JobPanelBackgroundInner/JobPanelBackgroundInnerGrid/HireWorker" to="." method="_on_HireWorker_pressed"]

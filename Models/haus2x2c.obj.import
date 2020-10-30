@@ -1,0 +1,19 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/haus2x2c.obj-a668c6938e69388e07d3145348685396.mesh"
+
+[deps]
+
+files=[ "res://.import/haus2x2c.obj-a668c6938e69388e07d3145348685396.mesh" ]
+
+source_file="res://Models/haus2x2c.obj"
+dest_files=[ "res://.import/haus2x2c.obj-a668c6938e69388e07d3145348685396.mesh", "res://.import/haus2x2c.obj-a668c6938e69388e07d3145348685396.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh=true

@@ -1,0 +1,241 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Control
+
+var currentActor
+
+func ShowAndExpandTooltip(actor:Actor):
+	
+	currentActor = actor
+	
+	get_node(\"ScrollBarContainer/VBarContainer/tooltip_information\").visible = false
+	get_node(\"ScrollBarContainer/VBarContainer/livingspace_information\").visible = false
+	get_node(\"ScrollBarContainer/VBarContainer/generating_reosurce_information\").visible = false
+	
+	if actor == null:
+		return
+	
+	var findToolTip = actor.getFirstPartOrDefault(\"ToolTipInfo\")
+	
+	if findToolTip == null:
+		return
+	
+	get_node(\"ScrollBarContainer/VBarContainer/tooltip_information\").visible = true
+	get_node(\"ScrollBarContainer/VBarContainer/tooltip_information/Label\").text = findToolTip.ActorName
+	get_node(\"ScrollBarContainer/VBarContainer/tooltip_information/Owner\").text = actor.Owner.PlayerName
+		
+	var livingSpace = actor.getFirstPartOrDefault(\"ProvidesLivingSpace\")
+	if livingSpace != null:
+		get_node(\"ScrollBarContainer/VBarContainer/livingspace_information\").visible = true
+		get_node(\"ScrollBarContainer/VBarContainer/livingspace_information/max_room\").text = \"Size: \" + str(livingSpace.LivingSpace)
+		get_node(\"ScrollBarContainer/VBarContainer/livingspace_information/used_room\").text = \"Occupied: \" + str(livingSpace.HousingActos.size())
+		
+	var generateRecources = actor.getFirstPartOrDefault(\"GeneratesRecources\")
+	if generateRecources != null:
+		get_node(\"ScrollBarContainer/VBarContainer/generating_reosurce_information\").visible = true
+
+	self.visible = true
+func _process(delta):
+	if !visible:
+		return
+	
+	if GameData.cameraAnchor.selectedItem == null:
+		visible = false
+		return
+	
+	rect_position = (GameData.cameraAnchor.camera.unproject_position(
+			GameData.cameraAnchor.selectedItem.global_transform.origin)-rect_size/2)
+	
+	if currentActor == null:
+		return
+	
+	var producesRecources = GameData.cameraAnchor.selectedItem.getFirstPartOrDefault(\"GeneratesRecources\")
+	
+	if producesRecources == null:
+		return
+		
+	var progressBar = get_node(\"ScrollBarContainer/VBarContainer/generating_reosurce_information/GridContainer/ProgressBar\")
+	progressBar.value = producesRecources.currentTime
+	progressBar.max_value = producesRecources.time
+
+func _on_EinstellungsButton_pressed():
+	UiLibData.FactorySettings.SetupAndShowFactory(currentActor)
+"
+
+[node name="BuildingToolTip" type="Control"]
+anchor_left = 0.012
+anchor_top = 0.008
+anchor_right = 0.201
+anchor_bottom = 0.363
+margin_left = -12.288
+margin_top = -4.8
+margin_right = 4.17599
+margin_bottom = 5.2
+mouse_filter = 2
+script = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" type="Panel" parent="."]
+self_modulate = Color( 0.494118, 0.494118, 0.494118, 1 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel2" type="Panel" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 5.0
+margin_right = -4.0
+margin_bottom = -5.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ScrollBarContainer" type="ScrollContainer" parent="."]
+margin_left = 4.0
+margin_top = 5.0
+margin_right = 206.0
+margin_bottom = 218.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBarContainer" type="VBoxContainer" parent="ScrollBarContainer"]
+margin_right = 202.0
+margin_bottom = 91.0
+rect_min_size = Vector2( 0, 35.066 )
+size_flags_horizontal = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="tooltip_information" type="GridContainer" parent="ScrollBarContainer/VBarContainer"]
+margin_right = 202.0
+margin_bottom = 43.0
+
+[node name="Owner" type="Label" parent="ScrollBarContainer/VBarContainer/tooltip_information"]
+margin_top = -1.0
+margin_right = 202.0
+margin_bottom = 15.683
+rect_min_size = Vector2( 0, 16.683 )
+size_flags_horizontal = 3
+text = "Owner"
+align = 2
+valign = 1
+autowrap = true
+clip_text = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="ScrollBarContainer/VBarContainer/tooltip_information"]
+margin_top = 19.0
+margin_right = 202.0
+margin_bottom = 34.385
+rect_min_size = Vector2( 0, 15.385 )
+size_flags_horizontal = 3
+text = "Name"
+autowrap = true
+clip_text = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HSeparator" type="HSeparator" parent="ScrollBarContainer/VBarContainer/tooltip_information"]
+margin_top = 39.0
+margin_right = 202.0
+margin_bottom = 43.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="livingspace_information" type="GridContainer" parent="ScrollBarContainer/VBarContainer"]
+visible = false
+margin_top = 47.0
+margin_right = 202.0
+margin_bottom = 135.0
+
+[node name="Label" type="Label" parent="ScrollBarContainer/VBarContainer/livingspace_information"]
+margin_right = 202.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 0, 20 )
+text = "Living Informations"
+align = 1
+valign = 1
+autowrap = true
+clip_text = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="max_room" type="Label" parent="ScrollBarContainer/VBarContainer/livingspace_information"]
+margin_top = 24.0
+margin_right = 202.0
+margin_bottom = 54.0
+rect_min_size = Vector2( 0, 30 )
+size_flags_horizontal = 3
+text = "Size"
+valign = 1
+autowrap = true
+clip_text = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="used_room" type="Label" parent="ScrollBarContainer/VBarContainer/livingspace_information"]
+margin_top = 58.0
+margin_right = 202.0
+margin_bottom = 88.0
+rect_min_size = Vector2( 0, 30 )
+size_flags_horizontal = 3
+text = "Free"
+valign = 1
+autowrap = true
+clip_text = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="generating_reosurce_information" type="GridContainer" parent="ScrollBarContainer/VBarContainer"]
+margin_top = 47.0
+margin_right = 202.0
+margin_bottom = 91.0
+
+[node name="Label" type="Label" parent="ScrollBarContainer/VBarContainer/generating_reosurce_information"]
+margin_right = 202.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 0, 20 )
+size_flags_horizontal = 3
+text = "Fabrik Einstellungen"
+align = 1
+valign = 1
+autowrap = true
+clip_text = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GridContainer" type="GridContainer" parent="ScrollBarContainer/VBarContainer/generating_reosurce_information"]
+margin_top = 24.0
+margin_right = 202.0
+margin_bottom = 44.0
+columns = 2
+
+[node name="EinstellungsButton" type="Button" parent="ScrollBarContainer/VBarContainer/generating_reosurce_information/GridContainer"]
+margin_right = 98.0
+margin_bottom = 20.0
+size_flags_horizontal = 4
+text = "Einstellungen"
+
+[node name="ProgressBar" type="ProgressBar" parent="ScrollBarContainer/VBarContainer/generating_reosurce_information/GridContainer"]
+margin_left = 102.0
+margin_right = 202.0
+margin_bottom = 14.0
+size_flags_horizontal = 3
+[connection signal="pressed" from="ScrollBarContainer/VBarContainer/generating_reosurce_information/GridContainer/EinstellungsButton" to="." method="_on_EinstellungsButton_pressed"]

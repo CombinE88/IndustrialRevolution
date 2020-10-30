@@ -1,0 +1,228 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends GridContainer
+
+var recourceValues = null
+var cityAmount
+var playerAmount
+var sellPrice
+var buyPrice
+var buyButton
+var sellButton
+var averagePrice
+
+func setUpRecources(_recourceValues:Array):
+
+	recourceValues = _recourceValues
+	get_node(\"recourceName\").text = recourceValues[0]
+	cityAmount = get_node(\"cityAmount\")
+	playerAmount = get_node(\"playerAmount\")
+	sellPrice = get_node(\"GridContainer/sellPrice\")
+	averagePrice = get_node(\"GridContainer/averagePrice\")
+	buyPrice = get_node(\"buyPrice\")
+	buyButton = get_node(\"buyButton\")
+	sellButton = get_node(\"sellButton\")
+
+func _process(delta):
+	if !visible || recourceValues == null:
+		return
+	
+	if GameData.cameraAnchor == null || GameData.cameraAnchor.activeVillage == null:
+		return
+	
+	var village = GameData.cameraAnchor.activeVillage
+	var playerStock = ResourceManager.getCurrentRecources(village.Village_Name,GameData.LocalPlayer.PlayerID)
+	var villageStock = ResourceManager.getCurrentRecources(village.Village_Name,0)
+	
+	#Kaufen
+	if playerStock.keys().has(recourceValues[0]) && playerStock[recourceValues[0]][0] > 0:
+				
+		var value:int = 0
+		if villageStock.keys().has(recourceValues[0]):
+			value = villageStock[recourceValues[0]][0]
+		
+		playerAmount.text = str(playerStock[recourceValues[0]][0])
+		sellPrice.text = str(ResourceManager.CalculateBuyPriceSpan(
+			value,
+			recourceValues[1],
+			recourceValues[2],
+			80))
+		averagePrice.text = \" ( \" + str(playerStock[recourceValues[0]][1]) + \" )\"
+			
+		sellButton.disabled = false
+	else:
+		playerAmount.text = \"\"
+		sellPrice.text = \"\"
+		averagePrice.text = \"\"
+		sellButton.disabled = true
+	
+	#verkaufen
+	if villageStock.keys().has(recourceValues[0]) && villageStock[recourceValues[0]][0] > 0:
+		
+		var value:int = 0
+		if villageStock.keys().has(recourceValues[0]):
+			value = villageStock[recourceValues[0]][0]
+			
+		cityAmount.text = str(villageStock[recourceValues[0]][0])
+		buyPrice.text = str(ResourceManager.CalculateBuyPriceSpan(
+			value,
+			recourceValues[1],
+			recourceValues[2],
+			110))
+		buyButton.disabled = false
+	else:
+		cityAmount.text = \"\"
+		buyPrice.text = \"\"
+		buyButton.disabled = true
+	
+
+
+func _on_sellButton_pressed():
+	if ResourceManager.CanWithDrawRecources(GameData.cameraAnchor.activeVillage.Village_Name,
+	GameData.LocalPlayer.PlayerID,
+	recourceValues[0],
+	1):
+		var price = int(sellPrice.text)
+		ResourceManager.WithDraw(GameData.cameraAnchor.activeVillage.Village_Name,
+			GameData.LocalPlayer.PlayerID,
+			recourceValues[0],
+			1)
+		ResourceManager.Deposit(GameData.cameraAnchor.activeVillage.Village_Name,
+			0,
+			recourceValues[0],
+			1,
+			0)
+		ResourceManager.Deposit(GameData.cameraAnchor.activeVillage.Village_Name,
+			GameData.LocalPlayer.PlayerID,
+			\"SpielerGold\",
+			price,
+			0)
+func _on_buyButton_pressed():
+	
+	if GameData.LocalPlayer.Gold < int(buyPrice.text):
+		return
+		
+	if ResourceManager.CanWithDrawRecources(GameData.cameraAnchor.activeVillage.Village_Name,
+	0,
+	recourceValues[0],
+	1):
+		var price = int(buyPrice.text)
+		ResourceManager.WithDraw(GameData.cameraAnchor.activeVillage.Village_Name,
+			0,
+			recourceValues[0],
+			1)
+		ResourceManager.Deposit(GameData.cameraAnchor.activeVillage.Village_Name,
+			GameData.LocalPlayer.PlayerID,
+			recourceValues[0],
+			1,
+			price)
+		ResourceManager.WithDraw(GameData.cameraAnchor.activeVillage.Village_Name,
+			GameData.LocalPlayer.PlayerID,
+			\"SpielerGold\",
+			price)
+"
+
+[node name="exampleRecource" type="GridContainer"]
+margin_right = 810.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+columns = 8
+script = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="recourceName" type="Label" parent="."]
+margin_top = 3.0
+margin_right = 97.0
+margin_bottom = 17.0
+size_flags_horizontal = 3
+text = "RecourceName"
+
+[node name="cityAmount" type="Label" parent="."]
+margin_left = 101.0
+margin_top = 3.0
+margin_right = 198.0
+margin_bottom = 17.0
+size_flags_horizontal = 3
+text = "xxx"
+align = 1
+
+[node name="buyButton" type="Button" parent="."]
+margin_left = 202.0
+margin_right = 299.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "Buy"
+
+[node name="buyPrice" type="Label" parent="."]
+margin_left = 303.0
+margin_top = 3.0
+margin_right = 400.0
+margin_bottom = 17.0
+size_flags_horizontal = 3
+text = "999"
+align = 1
+
+[node name="VSeparator" type="VSeparator" parent="."]
+margin_left = 404.0
+margin_right = 501.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+
+[node name="playerAmount" type="Label" parent="."]
+margin_left = 505.0
+margin_top = 3.0
+margin_right = 602.0
+margin_bottom = 17.0
+size_flags_horizontal = 3
+text = "xxx"
+align = 1
+
+[node name="sellButton" type="Button" parent="."]
+margin_left = 606.0
+margin_right = 703.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "Sell"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GridContainer" type="GridContainer" parent="."]
+margin_left = 707.0
+margin_right = 807.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 100, 0 )
+columns = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="sellPrice" type="Label" parent="GridContainer"]
+margin_top = 3.0
+margin_right = 48.0
+margin_bottom = 17.0
+size_flags_horizontal = 3
+size_flags_vertical = 6
+text = "999"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="averagePrice" type="Label" parent="GridContainer"]
+margin_left = 52.0
+margin_top = 3.0
+margin_right = 100.0
+margin_bottom = 17.0
+size_flags_horizontal = 3
+size_flags_vertical = 6
+text = " ( 999 )"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="pressed" from="buyButton" to="." method="_on_buyButton_pressed"]
+[connection signal="pressed" from="sellButton" to="." method="_on_sellButton_pressed"]

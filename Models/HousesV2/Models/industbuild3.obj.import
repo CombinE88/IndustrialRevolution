@@ -1,0 +1,19 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/industbuild3.obj-38785abd471446e2765a52ffc8219723.mesh"
+
+[deps]
+
+files=[ "res://.import/industbuild3.obj-38785abd471446e2765a52ffc8219723.mesh" ]
+
+source_file="res://Models/HousesV2/Models/industbuild3.obj"
+dest_files=[ "res://.import/industbuild3.obj-38785abd471446e2765a52ffc8219723.mesh", "res://.import/industbuild3.obj-38785abd471446e2765a52ffc8219723.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh=true

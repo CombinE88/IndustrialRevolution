@@ -1,0 +1,145 @@
+[gd_scene format=2]
+
+[node name="ResearchScreenBackgroundBorder" type="Panel"]
+self_modulate = Color( 0.458824, 0.458824, 0.458824, 1 )
+anchor_left = 0.013
+anchor_top = 0.13
+anchor_right = 0.818
+anchor_bottom = 0.983
+margin_right = 0.0720215
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ResearchScreenBackground" type="Panel" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 4.0
+margin_right = -4.0
+margin_bottom = -4.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ScrollContainer" type="ScrollContainer" parent="ResearchScreenBackground"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ResearchScreenBackground/ScrollContainer"]
+margin_right = 816.392
+margin_bottom = 503.8
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="exampleCategory" type="PanelContainer" parent="ResearchScreenBackground/ScrollContainer/HBoxContainer"]
+margin_right = 164.0
+margin_bottom = 503.0
+
+[node name="ResearchCategoryPanel" type="Panel" parent="ResearchScreenBackground/ScrollContainer/HBoxContainer/exampleCategory"]
+self_modulate = Color( 0.894118, 0.682353, 0.682353, 1 )
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 157.0
+margin_bottom = 496.0
+rect_min_size = Vector2( 150, 0 )
+size_flags_vertical = 3
+
+[node name="GridContainer2" type="GridContainer" parent="ResearchScreenBackground/ScrollContainer/HBoxContainer/exampleCategory/ResearchCategoryPanel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_min_size = Vector2( 150, 0 )
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="ResearchScreenBackground/ScrollContainer/HBoxContainer/exampleCategory/ResearchCategoryPanel/GridContainer2"]
+margin_right = 150.0
+margin_bottom = 14.0
+size_flags_horizontal = 3
+text = "ResearchCategory"
+align = 1
+
+[node name="ExampleResearch" type="CenterContainer" parent="ResearchScreenBackground/ScrollContainer/HBoxContainer/exampleCategory/ResearchCategoryPanel/GridContainer2"]
+margin_top = 18.0
+margin_right = 150.0
+margin_bottom = 118.0
+rect_min_size = Vector2( 0, 100 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button" type="Button" parent="ResearchScreenBackground/ScrollContainer/HBoxContainer/exampleCategory/ResearchCategoryPanel/GridContainer2/ExampleResearch"]
+margin_left = 50.0
+margin_top = 25.0
+margin_right = 100.0
+margin_bottom = 75.0
+rect_min_size = Vector2( 50, 50 )
+
+[node name="ExampleResearch2" type="CenterContainer" parent="ResearchScreenBackground/ScrollContainer/HBoxContainer/exampleCategory/ResearchCategoryPanel/GridContainer2"]
+margin_top = 122.0
+margin_right = 150.0
+margin_bottom = 222.0
+rect_min_size = Vector2( 0, 100 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button" type="Button" parent="ResearchScreenBackground/ScrollContainer/HBoxContainer/exampleCategory/ResearchCategoryPanel/GridContainer2/ExampleResearch2"]
+margin_left = 50.0
+margin_top = 25.0
+margin_right = 100.0
+margin_bottom = 75.0
+rect_min_size = Vector2( 50, 50 )
+
+[node name="ExampleResearch3" type="CenterContainer" parent="ResearchScreenBackground/ScrollContainer/HBoxContainer/exampleCategory/ResearchCategoryPanel/GridContainer2"]
+margin_top = 226.0
+margin_right = 150.0
+margin_bottom = 326.0
+rect_min_size = Vector2( 0, 100 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button" type="Button" parent="ResearchScreenBackground/ScrollContainer/HBoxContainer/exampleCategory/ResearchCategoryPanel/GridContainer2/ExampleResearch3"]
+margin_left = 50.0
+margin_top = 25.0
+margin_right = 100.0
+margin_bottom = 75.0
+rect_min_size = Vector2( 50, 50 )
+
+[node name="ExampleResearch4" type="CenterContainer" parent="ResearchScreenBackground/ScrollContainer/HBoxContainer/exampleCategory/ResearchCategoryPanel/GridContainer2"]
+margin_top = 330.0
+margin_right = 150.0
+margin_bottom = 430.0
+rect_min_size = Vector2( 0, 100 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button" type="Button" parent="ResearchScreenBackground/ScrollContainer/HBoxContainer/exampleCategory/ResearchCategoryPanel/GridContainer2/ExampleResearch4"]
+margin_left = 50.0
+margin_top = 25.0
+margin_right = 100.0
+margin_bottom = 75.0
+rect_min_size = Vector2( 50, 50 )
+
+[node name="ExampleResearch5" type="CenterContainer" parent="ResearchScreenBackground/ScrollContainer/HBoxContainer/exampleCategory/ResearchCategoryPanel/GridContainer2"]
+margin_top = 434.0
+margin_right = 150.0
+margin_bottom = 534.0
+rect_min_size = Vector2( 0, 100 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button" type="Button" parent="ResearchScreenBackground/ScrollContainer/HBoxContainer/exampleCategory/ResearchCategoryPanel/GridContainer2/ExampleResearch5"]
+margin_left = 50.0
+margin_top = 25.0
+margin_right = 100.0
+margin_bottom = 75.0
+rect_min_size = Vector2( 50, 50 )

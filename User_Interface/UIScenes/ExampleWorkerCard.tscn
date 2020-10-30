@@ -1,0 +1,188 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Panel
+
+var Worker:Actor = null
+var AvailableJob:ProvidesWorkingSpace = null
+var WorkForce:CanWork = null
+var JobKarta
+var JobPanel
+var wName = \"Max Mustermann\"
+
+func setUpKarta(jobPanel,jobKarta,workForce:CanWork,job:ProvidesWorkingSpace):
+	Worker = workForce._self()
+	AvailableJob = job
+	WorkForce = workForce
+	JobKarta = jobKarta
+	JobPanel = jobPanel
+	
+	
+	#hier Name auslesen und einfügen
+	var info = Worker.getFirstPartOrDefault(\"CitizenInformations\")#
+	if info != null:
+		wName = info.CitizenName
+	get_node(\"Panel/GridContainer/GridContainer/WorkerName\").text = wName
+	get_node(\"CitizenToolTipPanelBackground/CitizenToolTipPanelBackgroundInner/CitizenToolTipPanelGrid/Label\").text = wName
+	
+	visible = true
+	
+	for trait in WorkForce.Traits.keys():
+		var label = Label.new()
+		label.text = str(trait)+ \" : \" + str(WorkForce.Traits[trait]) + \" %\"
+		get_node(\"CitizenToolTipPanelBackground/CitizenToolTipPanelBackgroundInner/CitizenToolTipPanelGrid/CitizenToolTipPanelGrid2\").add_child(label)
+	
+	var requiredTraits = job.RequiredTraits.size()
+	var compatibility = 0
+	for trait in workForce.Traits.keys():
+		if job.RequiredTraits.has(trait):
+			compatibility += workForce.Traits[trait]
+	compatibility = round(compatibility / requiredTraits)
+		
+		
+	get_node(\"Panel/GridContainer/GridContainer/CompatibilityValue\").text = str(compatibility) + \" %\"
+
+func _on_Button_pressed():
+	if WorkForce.WorkSpace != null:
+		return
+	AvailableJob.RegisterWokring(Worker)
+	WorkForce.HireAtWorkplace(AvailableJob._self())
+	
+	UiLibData.HireScreen.Update()
+	
+	if AvailableJob.isFull():
+		JobPanel.close()
+		
+	JobKarta.UpdateWork(AvailableJob)
+	queue_free()
+
+
+func _on_ExampleWorkerCard_mouse_entered():
+	get_node(\"CitizenToolTipPanelBackground\").visible = true
+
+
+func _on_ExampleWorkerCard_mouse_exited():
+	get_node(\"CitizenToolTipPanelBackground\").visible = false
+	
+"
+
+[node name="ExampleWorkerCard" type="Panel"]
+self_modulate = Color( 0.458824, 0.458824, 0.458824, 1 )
+margin_right = 202.0
+margin_bottom = 50.0
+rect_min_size = Vector2( 0, 50 )
+size_flags_horizontal = 3
+script = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" type="Panel" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 3.0
+margin_top = 3.0
+margin_right = -3.0
+margin_bottom = -3.0
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GridContainer" type="GridContainer" parent="Panel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 1.0
+margin_top = 1.0
+margin_right = -1.0
+margin_bottom = -1.0
+mouse_filter = 2
+columns = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GridContainer" type="GridContainer" parent="Panel/GridContainer"]
+margin_right = 115.0
+margin_bottom = 42.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="WorkerName" type="Label" parent="Panel/GridContainer/GridContainer"]
+margin_right = 115.0
+margin_bottom = 19.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "name of person"
+autowrap = true
+
+[node name="CompatibilityValue" type="Label" parent="Panel/GridContainer/GridContainer"]
+margin_top = 23.0
+margin_right = 115.0
+margin_bottom = 42.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "%%%"
+autowrap = true
+
+[node name="Button" type="Button" parent="Panel/GridContainer"]
+margin_left = 119.0
+margin_right = 194.0
+margin_bottom = 42.0
+text = "Einstellen"
+
+[node name="CitizenToolTipPanelBackground" type="Panel" parent="."]
+visible = false
+self_modulate = Color( 0.419608, 0.411765, 0.411765, 1 )
+anchor_left = -0.825
+anchor_bottom = 0.463
+margin_left = -24.35
+margin_bottom = 132.85
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CitizenToolTipPanelBackgroundInner" type="Panel" parent="CitizenToolTipPanelBackground"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 3.0
+margin_top = 3.0
+margin_right = -3.0
+margin_bottom = -3.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CitizenToolTipPanelGrid" type="GridContainer" parent="CitizenToolTipPanelBackground/CitizenToolTipPanelBackgroundInner"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 2.52808
+margin_top = 3.0
+margin_right = -3.47192
+margin_bottom = -3.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="CitizenToolTipPanelBackground/CitizenToolTipPanelBackgroundInner/CitizenToolTipPanelGrid"]
+margin_right = 179.0
+margin_bottom = 14.0
+text = "name"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CitizenToolTipPanelGrid2" type="GridContainer" parent="CitizenToolTipPanelBackground/CitizenToolTipPanelBackgroundInner/CitizenToolTipPanelGrid"]
+margin_top = 18.0
+margin_right = 179.0
+margin_bottom = 144.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="mouse_entered" from="." to="." method="_on_ExampleWorkerCard_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_ExampleWorkerCard_mouse_exited"]
+[connection signal="pressed" from="Panel/GridContainer/Button" to="." method="_on_Button_pressed"]

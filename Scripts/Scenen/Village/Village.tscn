@@ -1,0 +1,26 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://Scripts/Village/VillageParts/RoadBuilder.gd" type="Script" id=1]
+[ext_resource path="res://Scripts/Village/Village.gd" type="Script" id=2]
+[ext_resource path="res://Scripts/RoadNetwork.gd" type="Script" id=3]
+[ext_resource path="res://Scripts/Actor/ActorParts/FootprintHandler.gd" type="Script" id=4]
+[ext_resource path="res://Scripts/TerrainWorld.gd" type="Script" id=5]
+
+[node name="Village" type="Spatial"]
+script = ExtResource( 2 )
+
+[node name="TerrainWorld" type="Spatial" parent="."]
+script = ExtResource( 5 )
+
+[node name="TerrainMesh" type="MeshInstance" parent="TerrainWorld"]
+
+[node name="FootprintHandler" type="Spatial" parent="."]
+script = ExtResource( 4 )
+
+[node name="RoadMesh" type="MeshInstance" parent="."]
+
+[node name="RoadNetwork" type="Node" parent="."]
+script = ExtResource( 3 )
+
+[node name="RoadBuilder" type="Node" parent="RoadNetwork"]
+script = ExtResource( 1 )

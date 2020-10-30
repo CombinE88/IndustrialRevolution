@@ -1,0 +1,275 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://User_Interface/UIScenes/ExampleJobPanel.tscn" type="PackedScene" id=1]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Panel
+
+var currentActor:Actor
+var toolTipInfo:ToolTipInfo
+var JobList:Array = []
+var globalEfficincy
+var jobCount
+var unbesetzteJobs
+var jobGrid 
+	
+
+func _unhandled_input(event):
+	if event.is_action(\"Close\"):
+		visible = false
+		currentActor = null
+		toolTipInfo = null
+		JobList = []
+	
+func _ready():
+	globalEfficincy = get_node(\"GridContainer/DiscriptionBackground/DiscriptionBackgroundInner/ProgressBar\")
+	jobCount = get_node(\"GridContainer/DiscriptionBackground/DiscriptionBackgroundInner/JobCount\")
+	unbesetzteJobs = get_node(\"GridContainer/DiscriptionBackground/DiscriptionBackgroundInner/unbesetzteJobs\")
+	jobGrid = get_node(\"GridContainer/JobListScrollContainer/JobGrid\")
+	
+
+func SetupAndShowFactory(actor:Actor):
+	self.visible = true	
+	currentActor = actor
+	
+	get_node(\"GridContainer/DiscriptionBackground/DiscriptionBackgroundInner/OwnerName\").text = actor.Owner.PlayerName
+	
+	var toolTip = actor.getFirstPartOrDefault(\"ToolTipInfo\")
+	
+	if toolTip != null:
+		toolTipInfo = toolTip
+		get_node(\"GridContainer/DiscriptionBackground/DiscriptionBackgroundInner/ActorName\").text = toolTip.ActorName
+	
+	JobList = actor.getPartsOfType(\"ProvidesWorkingSpace\")
+	
+	for child in get_node(\"GridContainer/JobListScrollContainer/JobGrid\").get_children():
+		child.queue_free()
+	
+	for job in JobList:
+		var new_job_panel = load(\"res://User_Interface/UIScenes/ExampleJobPanel.tscn\")
+		var new_job_panel_isntance = new_job_panel.instance()
+
+		new_job_panel_isntance.setUpJob(job)
+		get_node(\"GridContainer/JobListScrollContainer/JobGrid\").add_child(new_job_panel_isntance)
+
+func _process(delta):
+	if !visible:
+		return
+		
+	if currentActor == null || toolTipInfo == null || JobList.empty():
+		visible = false
+		return
+	
+	var sum = 0
+	var maxSum = 0
+	
+	for job in JobList:
+		maxSum += job.maxJobs
+		sum += job.WorkingCitizens.size()
+		
+	jobCount.text = \"Aktuelle Arbeiten: \"+str(maxSum)
+	unbesetzteJobs.text = \"Davon Unbesetzt: \"+str(maxSum-sum)
+	
+	for jobCard in get_node(\"GridContainer/JobListScrollContainer/JobGrid\").get_children():
+		jobCard.setProgress()
+	
+	var efficencySum:float = 0
+	var devider = 0
+	for job in JobList:
+		devider += job.Weight
+		efficencySum += job.getEfficency() * job.Weight
+	efficencySum = min(100 , max(0 , efficencySum / devider))
+	globalEfficincy.value = efficencySum
+		
+"
+
+[sub_resource type="GDScript" id=2]
+script/source = "extends Panel
+
+var workerCount
+var progressBar 
+var workerName
+var fireButton
+var hireButton
+var currentJob:ProvidesWorkingSpace = null
+
+func setUpJob(job:ProvidesWorkingSpace):
+	workerCount = get_node(\"JobPanelBackgroundInner/JobPanelBackgroundInnerGrid/DiscriptionPanelBackground/DiscriptionPanelBackGroundGrid/JobInfo/GridContainer2/workerCount\")
+	progressBar = get_node(\"JobPanelBackgroundInner/JobPanelBackgroundInnerGrid/DiscriptionPanelBackground/DiscriptionPanelBackGroundGrid/JobInfo/GridContainer2/ProgressBar\")
+	workerName = get_node(\"JobPanelBackgroundInner/JobPanelBackgroundInnerGrid/DiscriptionPanelBackground/DiscriptionPanelBackGroundGrid/WoekerInfo/GridContainer/WorkerNameLabel\")
+	fireButton = get_node(\"JobPanelBackgroundInner/JobPanelBackgroundInnerGrid/DiscriptionPanelBackground/DiscriptionPanelBackGroundGrid/WoekerInfo/GridContainer/Fire\")
+	hireButton = get_node(\"JobPanelBackgroundInner/JobPanelBackgroundInnerGrid/HireWorker\")
+	get_node(\"JobPanelBackgroundInner/JobPanelBackgroundInnerGrid/DiscriptionPanelBackground/DiscriptionPanelBackGroundGrid/JobInfo/GridContainer2/JobName\").text = job.JobName
+	
+	UpdateWork(job)
+		
+	currentJob = job
+	
+func UpdateWork(job:ProvidesWorkingSpace):
+	if job.WorkingCitizens.size() > 0:
+		
+		var wName = \"Max Mustermann\"
+		var citizenInfo = job.WorkingCitizens[0].getFirstPartOrDefault(\"CitizenInformations\")
+		if citizenInfo != null:
+			wName = citizenInfo.CitizenName
+			
+		workerName.text = wName
+		fireButton.visible = true
+		hireButton.visible = false
+	else:
+		workerName.text = \"---\"
+		fireButton.visible = false
+		hireButton.visible = true
+
+func setProgress():
+	progressBar.value = currentJob.getEfficency()
+	workerCount.text = str(currentJob.WorkingCitizens.size()) + \" / \" +str(currentJob.maxJobs)
+
+func _on_HireWorker_pressed():
+	UiLibData.HireScreen.HireWorker(self,currentJob)
+"
+
+[node name="FactoryPanel" type="Panel"]
+visible = false
+anchor_right = 0.607
+anchor_bottom = 0.974
+margin_left = 9.70264
+margin_top = 74.0
+margin_right = 0.134644
+margin_bottom = 0.600037
+script = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GridContainer" type="GridContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 1.0
+margin_top = 2.0
+margin_right = -2.0
+margin_bottom = -1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="DiscriptionBackground" type="Panel" parent="GridContainer"]
+self_modulate = Color( 0.470588, 0.470588, 0.470588, 1 )
+margin_right = 609.0
+margin_bottom = 73.486
+rect_min_size = Vector2( 0, 73.486 )
+size_flags_horizontal = 3
+
+[node name="DiscriptionBackgroundInner" type="Panel" parent="GridContainer/DiscriptionBackground"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 3.47194
+margin_top = 3.0
+margin_right = -2.52808
+margin_bottom = -3.11594
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ActorName" type="Label" parent="GridContainer/DiscriptionBackground/DiscriptionBackgroundInner"]
+anchor_left = 0.006
+anchor_top = 0.027
+anchor_right = 0.453
+anchor_bottom = 0.23
+margin_left = -0.258815
+margin_top = 0.00988662
+margin_right = -230.694
+margin_bottom = 0.00288677
+text = "Name"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="OwnerName" type="Label" parent="GridContainer/DiscriptionBackground/DiscriptionBackgroundInner"]
+anchor_left = 0.659
+anchor_top = 0.027
+anchor_right = 0.997
+anchor_bottom = 0.23
+margin_left = 164.432
+margin_top = 0.00988662
+margin_right = -0.0582886
+margin_bottom = 0.00288677
+grow_horizontal = 0
+text = "Name"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="JobCount" type="Label" parent="GridContainer/DiscriptionBackground/DiscriptionBackgroundInner"]
+anchor_left = 0.2
+anchor_top = 0.377
+anchor_right = 0.434
+anchor_bottom = 0.58
+margin_top = -0.0130005
+margin_right = -0.0700073
+margin_bottom = -0.0200043
+text = "Aktuelle Arbeiten: "
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="unbesetzteJobs" type="Label" parent="GridContainer/DiscriptionBackground/DiscriptionBackgroundInner"]
+anchor_left = 0.6
+anchor_top = 0.388
+anchor_right = 0.788
+anchor_bottom = 0.522
+margin_top = -0.0015316
+margin_right = 0.259979
+margin_bottom = 4.75247
+text = "Davon Unbesetzt:"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="gesamtEffizienz" type="Label" parent="GridContainer/DiscriptionBackground/DiscriptionBackgroundInner"]
+anchor_left = 0.007
+anchor_top = 0.712
+anchor_right = 0.188
+anchor_bottom = 0.92
+margin_left = -0.861815
+margin_top = 0.8223
+margin_right = 3.99518
+margin_bottom = 0.809326
+text = "Effizienz:"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ProgressBar" type="ProgressBar" parent="GridContainer/DiscriptionBackground/DiscriptionBackgroundInner"]
+anchor_left = 0.2
+anchor_top = 0.672
+anchor_right = 0.8
+anchor_bottom = 0.69
+margin_top = 3.5171
+margin_right = 4.0
+margin_bottom = 17.5171
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="JobListScrollContainer" type="ScrollContainer" parent="GridContainer"]
+margin_top = 77.0
+margin_right = 609.0
+margin_bottom = 508.0
+mouse_filter = 1
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="JobGrid" type="GridContainer" parent="GridContainer/JobListScrollContainer"]
+margin_right = 609.0
+margin_bottom = 431.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ExampleJobPanelBackground" parent="GridContainer/JobListScrollContainer/JobGrid" instance=ExtResource( 1 )]
+visible = false
+script = SubResource( 2 )

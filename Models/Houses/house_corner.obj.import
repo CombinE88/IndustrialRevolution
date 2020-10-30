@@ -1,0 +1,19 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/house_corner.obj-73e6894de52d9051bb56cd3f4088ed3a.mesh"
+
+[deps]
+
+files=[ "res://.import/house_corner.obj-73e6894de52d9051bb56cd3f4088ed3a.mesh" ]
+
+source_file="res://Models/Houses/house_corner.obj"
+dest_files=[ "res://.import/house_corner.obj-73e6894de52d9051bb56cd3f4088ed3a.mesh", "res://.import/house_corner.obj-73e6894de52d9051bb56cd3f4088ed3a.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh=true

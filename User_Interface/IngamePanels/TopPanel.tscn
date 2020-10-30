@@ -1,0 +1,10 @@
+[gd_scene format=2]
+
+[node name="TopPanel" type="Panel"]
+anchor_right = 1.0
+margin_left = -0.561279
+margin_right = -0.561279
+margin_bottom = 68.0
+__meta__ = {
+"_edit_use_anchors_": false
+}

@@ -1,0 +1,208 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://User_Interface/UIScenes/MainMenu/StartGameButton.gd" type="Script" id=1]
+[ext_resource path="res://User_Interface/UIScenes/MainMenu/ConnecttoHostButton.gd" type="Script" id=2]
+[ext_resource path="res://User_Interface/UIScenes/MainMenu/HostGameButton.gd" type="Script" id=3]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Node
+
+func _ready():
+	
+	var TooltipPreload = preload(\"res://User_Interface/BuildingToolTip.tscn\")
+	var TooltipInstanced = TooltipPreload.instance()
+	add_child(TooltipInstanced)
+	TooltipInstanced.visible = false
+	
+	UiLibData.ToolTipPanel = TooltipInstanced
+	
+	UiLibData.MainMenuTree = get_node(\"MainMenu\")
+	
+	var IngameMenuPreload = preload(\"res://User_Interface/UIScenes/IngameMenu.tscn\")
+	var IngameMenuInstanced = IngameMenuPreload.instance()
+	add_child(IngameMenuInstanced)
+	IngameMenuInstanced.visible = false
+	
+	UiLibData.IngamePanelManuTree = IngameMenuInstanced
+
+	UiLibData.LobbyPanel = get_node(\"LobbyPanel\")
+	UiLibData.LoadingScreen = get_node(\"LoadingScreen\")
+
+"
+
+[node name="GameRootNode" type="Node"]
+script = SubResource( 1 )
+
+[node name="MainMenu" type="Panel" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -231.461
+margin_top = -172.913
+margin_right = 216.539
+margin_bottom = 196.087
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainMenu"]
+margin_left = 75.0
+margin_top = 71.0
+margin_right = 378.0
+margin_bottom = 340.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GridContainer" type="GridContainer" parent="MainMenu/VBoxContainer"]
+margin_right = 303.0
+margin_bottom = 231.0
+custom_constants/vseparation = 33
+custom_constants/hseparation = 0
+
+[node name="startGame" type="Button" parent="MainMenu/VBoxContainer/GridContainer"]
+margin_right = 303.0
+margin_bottom = 32.092
+rect_min_size = Vector2( 0, 32.092 )
+size_flags_horizontal = 3
+text = "Start Game"
+script = ExtResource( 1 )
+
+[node name="hostGame" type="Button" parent="MainMenu/VBoxContainer/GridContainer"]
+margin_top = 65.0
+margin_right = 303.0
+margin_bottom = 97.092
+rect_min_size = Vector2( 0, 32.092 )
+text = "Host game"
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GridContainer" type="GridContainer" parent="MainMenu/VBoxContainer/GridContainer"]
+margin_top = 130.0
+margin_right = 303.0
+margin_bottom = 167.0
+columns = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="connectToHost" type="Button" parent="MainMenu/VBoxContainer/GridContainer/GridContainer"]
+margin_right = 88.225
+margin_bottom = 37.858
+rect_min_size = Vector2( 88.225, 37.858 )
+text = "Connect"
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ipTarget" type="TextEdit" parent="MainMenu/VBoxContainer/GridContainer/GridContainer"]
+margin_left = 92.0
+margin_right = 249.0
+margin_bottom = 37.0
+rect_min_size = Vector2( 24.935, 33.889 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "192.168.178.46"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ipPort" type="TextEdit" parent="MainMenu/VBoxContainer/GridContainer/GridContainer"]
+margin_left = 253.0
+margin_right = 303.37
+margin_bottom = 37.0
+rect_min_size = Vector2( 50.37, 0 )
+size_flags_horizontal = 0
+size_flags_vertical = 3
+text = "1337"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="playerName" type="TextEdit" parent="MainMenu/VBoxContainer/GridContainer"]
+margin_top = 200.0
+margin_right = 303.0
+margin_bottom = 231.903
+rect_min_size = Vector2( 0, 31.903 )
+text = "PlayerName"
+
+[node name="LobbyPanel" type="Panel" parent="."]
+visible = false
+margin_left = 458.0
+margin_top = 4.0
+margin_right = 1017.0
+margin_bottom = 592.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PlayerGrid" type="GridContainer" parent="LobbyPanel"]
+margin_left = 18.0
+margin_top = 15.0
+margin_right = 540.0
+margin_bottom = 570.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PlayerExample" type="GridContainer" parent="LobbyPanel/PlayerGrid"]
+margin_right = 522.0
+margin_bottom = 14.0
+size_flags_horizontal = 3
+columns = 3
+
+[node name="NameLabel" type="Label" parent="LobbyPanel/PlayerGrid/PlayerExample"]
+margin_right = 81.0
+margin_bottom = 14.0
+size_flags_horizontal = 2
+text = "Player Name"
+
+[node name="IDLabel" type="Label" parent="LobbyPanel/PlayerGrid/PlayerExample"]
+margin_left = 175.0
+margin_right = 233.0
+margin_bottom = 14.0
+size_flags_horizontal = 2
+text = "Player ID"
+
+[node name="IPLabel" type="Label" parent="LobbyPanel/PlayerGrid/PlayerExample"]
+margin_left = 350.0
+margin_right = 406.0
+margin_bottom = 14.0
+size_flags_horizontal = 2
+text = "Player IP"
+
+[node name="LoadingScreen" type="Control" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = 1.0
+margin_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" type="Panel" parent="LoadingScreen"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="LoadingScreen/Panel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -2.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Loading"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}

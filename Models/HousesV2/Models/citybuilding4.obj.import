@@ -1,0 +1,19 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/citybuilding4.obj-c0f95c43729cf679fd1c550575eb6788.mesh"
+
+[deps]
+
+files=[ "res://.import/citybuilding4.obj-c0f95c43729cf679fd1c550575eb6788.mesh" ]
+
+source_file="res://Models/HousesV2/Models/citybuilding4.obj"
+dest_files=[ "res://.import/citybuilding4.obj-c0f95c43729cf679fd1c550575eb6788.mesh", "res://.import/citybuilding4.obj-c0f95c43729cf679fd1c550575eb6788.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh=true

@@ -1,0 +1,19 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/f_roof.obj-d2621af811074f77a268ed9dfb3f3cee.mesh"
+
+[deps]
+
+files=[ "res://.import/f_roof.obj-d2621af811074f77a268ed9dfb3f3cee.mesh" ]
+
+source_file="res://Models/Test_Factory_A/f_roof.obj"
+dest_files=[ "res://.import/f_roof.obj-d2621af811074f77a268ed9dfb3f3cee.mesh", "res://.import/f_roof.obj-d2621af811074f77a268ed9dfb3f3cee.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh=true

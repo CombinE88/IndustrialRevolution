@@ -1,0 +1,19 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/f_wall.obj-3e9b690ae8610f20d6663ae233016d21.mesh"
+
+[deps]
+
+files=[ "res://.import/f_wall.obj-3e9b690ae8610f20d6663ae233016d21.mesh" ]
+
+source_file="res://Models/Test_Factory_A/f_wall.obj"
+dest_files=[ "res://.import/f_wall.obj-3e9b690ae8610f20d6663ae233016d21.mesh", "res://.import/f_wall.obj-3e9b690ae8610f20d6663ae233016d21.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh=true

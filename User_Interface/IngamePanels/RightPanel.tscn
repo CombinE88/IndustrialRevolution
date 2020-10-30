@@ -1,0 +1,560 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://User_Interface/IngamePanels/construction_panel.gd" type="Script" id=1]
+[ext_resource path="res://User_Interface/IngamePanels/village_informations_panel.gd" type="Script" id=2]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Panel
+
+func _process(delta):
+	if GameData.LocalPlayer != null:
+		get_node(\"GoldCounter\").text = str(GameData.LocalPlayer.Gold)
+
+func _on_TradeButton_pressed():
+	UiLibData.TradeScreen.visible = !UiLibData.TradeScreen.visible
+"
+
+[sub_resource type="GDScript" id=2]
+script/source = "extends GridContainer
+
+func _on_Show_prod_buildings_pressed():
+	visible = true
+
+
+func _on_Show_vill_buildings_pressed():
+	visible = false
+"
+
+[sub_resource type="GDScript" id=3]
+script/source = "extends Button
+
+func _pressed():
+	var cursorType = PlaceBuildingCursor.new(ActorLoader.GenerateActorParts(ActorDatabase.SaegeFabrik),ActorDatabase.SaegeFabrik[0])
+	GameData.cursorHandler.set_cursor(cursorType)
+"
+
+[sub_resource type="GDScript" id=4]
+script/source = "extends GridContainer
+
+func _on_Show_prod_buildings_pressed():
+	visible = false
+
+
+func _on_Show_vill_buildings_pressed():
+	visible = true
+"
+
+[sub_resource type="GDScript" id=5]
+script/source = "extends Button
+
+func _pressed():
+	pass
+"
+
+[sub_resource type="GDScript" id=6]
+script/source = "extends Panel
+
+func _process(delta):
+	if GameData.cursorHandler == null || GameData.cursorHandler.Cursor == null:
+		visible = false
+		return
+	
+	var cursor = GameData.cursorHandler.Cursor
+	
+	if cursor.getType() != \"PlaceBuildingCursor\":
+		visible = false
+		return
+		
+	visible = true
+	cursor = cursor as PlaceBuildingCursor
+	
+	var actor = cursor.ghost_item
+	if actor == null:
+		visible = false
+		return
+		
+	var nameToolTip = actor.getFirstPartOrDefault(\"ToolTipInfo\")
+	
+	if nameToolTip != null:
+		get_node(\"InfoSideInner/InfoGrid/name_grid/name\").text = nameToolTip.ActorName
+	
+	var costValued = actor.getFirstPartOrDefault(\"Valued\")
+	var costNode = get_node(\"InfoSideInner/InfoGrid/cost_grid\")
+	
+	if costValued == null:
+		costNode.visible = false
+		return
+	else:
+		costNode.visible = true
+	
+	var res = ResourceManager.getCurrentRecources(
+		GameData.cameraAnchor.activeVillage.Village_Name,
+		GameData.LocalPlayer.PlayerID)
+	
+	if !costValued.Cost.keys().has(\"Holz\"):
+		costNode.get_node(\"cost_holz\").visible = false
+	else:
+		costNode.get_node(\"cost_holz\").visible = true
+		costNode.get_node(\"cost_holz\").get_node(\"value\").text = str(costValued.Cost[\"Holz\"])
+		if res.keys().has(\"Holz\"):
+			costNode.get_node(\"cost_holz\").get_node(\"hasValue\").text = \"(\"+str(res[\"Holz\"])+\")\"
+		
+	if !costValued.Cost.keys().has(\"Stein\"):
+		costNode.get_node(\"cost_stein\").visible = false
+	else:
+		costNode.get_node(\"cost_stein\").visible = true
+		costNode.get_node(\"cost_stein\").get_node(\"value\").text = str(costValued.Cost[\"Stein\"])
+		if res.keys().has(\"Stein\"):
+			costNode.get_node(\"cost_stein\").get_node(\"hasValue\").text = \"(\"+str(res[\"Stein\"])+\")\"
+		
+	if !costValued.Cost.keys().has(\"Zement\"):
+		costNode.get_node(\"cost_zement\").visible = false
+	else:
+		costNode.get_node(\"cost_zement\").visible = true
+		costNode.get_node(\"cost_zement\").get_node(\"value\").text = str(costValued.Cost[\"Zement\"])
+		if res.keys().has(\"Zement\"):
+			costNode.get_node(\"cost_zement\").get_node(\"hasValue\").text = \"(\"+str(res[\"Zement\"])+\")\"
+		
+	if !costValued.Cost.keys().has(\"Ziegel\"):
+		costNode.get_node(\"cost_ziegel\").visible = false
+	else:
+		costNode.get_node(\"cost_ziegel\").visible = true
+		costNode.get_node(\"cost_ziegel\").get_node(\"value\").text = str(costValued.Cost[\"Ziegel\"])
+		if res.keys().has(\"Ziegel\"):
+			costNode.get_node(\"cost_ziegel\").get_node(\"hasValue\").text = \"(\"+str(res[\"Ziegel\"])+\")\"
+"
+
+[node name="RightPanel" type="Panel"]
+anchor_left = 1.0
+anchor_top = -0.000786565
+anchor_right = 1.0
+anchor_bottom = 0.999213
+margin_left = -175.127
+margin_top = 0.471939
+margin_right = 1.87292
+margin_bottom = 1.47192
+script = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GridContainer" type="GridContainer" parent="."]
+margin_left = 7.0
+margin_top = 39.0
+margin_right = 168.0
+margin_bottom = 96.0
+columns = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BuildingsPanelButton" type="Button" parent="GridContainer"]
+margin_right = 78.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "Gebäude"
+
+[node name="VillageInformations" type="Button" parent="GridContainer"]
+margin_left = 82.0
+margin_right = 160.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "Stadt Info"
+
+[node name="TradeButton" type="Button" parent="GridContainer"]
+margin_top = 24.0
+margin_right = 78.0
+margin_bottom = 44.0
+text = "Handel"
+
+[node name="construction_panel" type="Panel" parent="."]
+self_modulate = Color( 0.662745, 0.662745, 0.662745, 1 )
+margin_left = 7.0
+margin_top = 97.0
+margin_right = 168.0
+margin_bottom = 351.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="cunstruction_panel_grid" type="GridContainer" parent="construction_panel"]
+margin_left = 4.0
+margin_top = 4.0
+margin_right = 157.0
+margin_bottom = 250.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="building_categories" type="GridContainer" parent="construction_panel/cunstruction_panel_grid"]
+margin_right = 153.0
+margin_bottom = 20.0
+columns = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Show_prod_buildings" type="Button" parent="construction_panel/cunstruction_panel_grid/building_categories"]
+margin_right = 76.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "Poduction"
+
+[node name="Show_vill_buildings" type="Button" parent="construction_panel/cunstruction_panel_grid/building_categories"]
+margin_left = 80.0
+margin_right = 153.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "Living"
+
+[node name="production_buildings_panel" type="Panel" parent="construction_panel/cunstruction_panel_grid"]
+margin_top = 24.0
+margin_right = 153.0
+margin_bottom = 246.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="contruction_building_grid" type="GridContainer" parent="construction_panel/cunstruction_panel_grid/production_buildings_panel"]
+margin_left = 3.0
+margin_top = 5.0
+margin_right = 148.0
+margin_bottom = 222.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+script = SubResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="construct_brick_workshop" type="Button" parent="construction_panel/cunstruction_panel_grid/production_buildings_panel/contruction_building_grid"]
+visible = false
+margin_right = 145.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "Brick Workshop"
+
+[node name="construct_timber_workshop" type="Button" parent="construction_panel/cunstruction_panel_grid/production_buildings_panel/contruction_building_grid"]
+margin_right = 145.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "Sägewerk"
+script = SubResource( 3 )
+
+[node name="village_building_grid" type="GridContainer" parent="construction_panel/cunstruction_panel_grid/production_buildings_panel"]
+visible = false
+margin_left = 4.0
+margin_top = 5.0
+margin_right = 149.0
+margin_bottom = 222.0
+size_flags_vertical = 3
+script = SubResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="construct_low_residence" type="Button" parent="construction_panel/cunstruction_panel_grid/production_buildings_panel/village_building_grid"]
+margin_right = 145.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "Wohnhaus"
+
+[node name="construct_med_residence" type="Button" parent="construction_panel/cunstruction_panel_grid/production_buildings_panel/village_building_grid"]
+margin_top = 24.0
+margin_right = 145.0
+margin_bottom = 44.0
+size_flags_horizontal = 3
+text = "Stadt Villa"
+script = SubResource( 5 )
+
+[node name="village_informations_panel" type="Panel" parent="."]
+visible = false
+self_modulate = Color( 0.588235, 0.588235, 0.588235, 1 )
+margin_left = 6.58002
+margin_top = 97.483
+margin_right = 167.58
+margin_bottom = 390.483
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" type="Panel" parent="village_informations_panel"]
+margin_left = 4.0
+margin_top = 4.0
+margin_right = 157.0
+margin_bottom = 289.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GridContainer2" type="GridContainer" parent="village_informations_panel/Panel"]
+margin_left = 4.0
+margin_top = 5.0
+margin_right = 149.0
+margin_bottom = 282.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="village_informations_panel/Panel/GridContainer2"]
+margin_right = 112.0
+margin_bottom = 14.0
+text = "Population"
+
+[node name="Label2" type="Label" parent="village_informations_panel/Panel/GridContainer2"]
+margin_top = 18.0
+margin_right = 112.0
+margin_bottom = 32.0
+text = "Freie Wohnungen"
+
+[node name="Label3" type="Label" parent="village_informations_panel/Panel/GridContainer2"]
+margin_top = 36.0
+margin_right = 112.0
+margin_bottom = 50.0
+text = "Häuser"
+
+[node name="Label4" type="Label" parent="village_informations_panel/Panel/GridContainer2"]
+margin_top = 54.0
+margin_right = 112.0
+margin_bottom = 68.0
+text = "Info 1"
+
+[node name="Label5" type="Label" parent="village_informations_panel/Panel/GridContainer2"]
+margin_top = 72.0
+margin_right = 112.0
+margin_bottom = 86.0
+text = "Info 2"
+
+[node name="Label6" type="Label" parent="village_informations_panel/Panel/GridContainer2"]
+margin_top = 90.0
+margin_right = 112.0
+margin_bottom = 104.0
+text = "Noch eine Info"
+
+[node name="InfoSide" type="Panel" parent="."]
+self_modulate = Color( 0.615686, 0.615686, 0.615686, 1 )
+anchor_left = 0.04
+anchor_top = 0.594
+anchor_right = 0.949
+anchor_bottom = 0.989
+margin_left = -0.0800004
+margin_top = 0.00616455
+margin_right = 0.0269928
+margin_bottom = -0.388733
+script = SubResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="InfoSideInner" type="Panel" parent="InfoSide"]
+anchor_left = 0.025
+anchor_top = 0.017
+anchor_right = 0.975
+anchor_bottom = 0.983
+margin_left = -0.0250001
+margin_top = -0.0290003
+margin_right = 0.0249939
+margin_bottom = 0.0289917
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="InfoGrid" type="GridContainer" parent="InfoSide/InfoSideInner"]
+margin_right = 154.0
+margin_bottom = 230.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="name_grid" type="GridContainer" parent="InfoSide/InfoSideInner/InfoGrid"]
+margin_right = 154.0
+margin_bottom = 14.0
+size_flags_horizontal = 3
+
+[node name="name" type="Label" parent="InfoSide/InfoSideInner/InfoGrid/name_grid"]
+margin_right = 154.0
+margin_bottom = 14.0
+size_flags_horizontal = 3
+text = "name"
+align = 1
+
+[node name="HSeparator" type="HSeparator" parent="InfoSide/InfoSideInner/InfoGrid"]
+margin_top = 18.0
+margin_right = 154.0
+margin_bottom = 22.0
+
+[node name="cost_grid" type="GridContainer" parent="InfoSide/InfoSideInner/InfoGrid"]
+margin_top = 26.0
+margin_right = 154.0
+margin_bottom = 112.0
+size_flags_horizontal = 3
+
+[node name="costlabel" type="Label" parent="InfoSide/InfoSideInner/InfoGrid/cost_grid"]
+margin_right = 154.0
+margin_bottom = 14.0
+text = "Kosten:"
+
+[node name="cost_holz" type="GridContainer" parent="InfoSide/InfoSideInner/InfoGrid/cost_grid"]
+margin_top = 18.0
+margin_right = 154.0
+margin_bottom = 32.0
+size_flags_horizontal = 3
+columns = 4
+
+[node name="name" type="Label" parent="InfoSide/InfoSideInner/InfoGrid/cost_grid/cost_holz"]
+margin_right = 65.0
+margin_bottom = 14.0
+size_flags_horizontal = 3
+text = "Holz"
+
+[node name="colon" type="Label" parent="InfoSide/InfoSideInner/InfoGrid/cost_grid/cost_holz"]
+margin_left = 69.0
+margin_right = 73.0
+margin_bottom = 14.0
+text = ":"
+align = 1
+
+[node name="value" type="Label" parent="InfoSide/InfoSideInner/InfoGrid/cost_grid/cost_holz"]
+margin_left = 77.0
+margin_right = 142.0
+margin_bottom = 14.0
+size_flags_horizontal = 3
+text = "0"
+align = 1
+
+[node name="hasValue" type="Label" parent="InfoSide/InfoSideInner/InfoGrid/cost_grid/cost_holz"]
+margin_left = 146.0
+margin_right = 154.0
+margin_bottom = 14.0
+text = "0"
+align = 1
+
+[node name="cost_stein" type="GridContainer" parent="InfoSide/InfoSideInner/InfoGrid/cost_grid"]
+margin_top = 36.0
+margin_right = 154.0
+margin_bottom = 50.0
+size_flags_horizontal = 3
+columns = 4
+
+[node name="name" type="Label" parent="InfoSide/InfoSideInner/InfoGrid/cost_grid/cost_stein"]
+margin_right = 65.0
+margin_bottom = 14.0
+size_flags_horizontal = 3
+text = "Stein"
+
+[node name="colon" type="Label" parent="InfoSide/InfoSideInner/InfoGrid/cost_grid/cost_stein"]
+margin_left = 69.0
+margin_right = 73.0
+margin_bottom = 14.0
+text = ":"
+align = 1
+
+[node name="value" type="Label" parent="InfoSide/InfoSideInner/InfoGrid/cost_grid/cost_stein"]
+margin_left = 77.0
+margin_right = 142.0
+margin_bottom = 14.0
+size_flags_horizontal = 3
+text = "0"
+align = 1
+
+[node name="hasValue" type="Label" parent="InfoSide/InfoSideInner/InfoGrid/cost_grid/cost_stein"]
+margin_left = 146.0
+margin_right = 154.0
+margin_bottom = 14.0
+text = "0"
+align = 1
+
+[node name="cost_zement" type="GridContainer" parent="InfoSide/InfoSideInner/InfoGrid/cost_grid"]
+margin_top = 54.0
+margin_right = 154.0
+margin_bottom = 68.0
+size_flags_horizontal = 3
+columns = 4
+
+[node name="name" type="Label" parent="InfoSide/InfoSideInner/InfoGrid/cost_grid/cost_zement"]
+margin_right = 65.0
+margin_bottom = 14.0
+size_flags_horizontal = 3
+text = "Zement"
+
+[node name="colon" type="Label" parent="InfoSide/InfoSideInner/InfoGrid/cost_grid/cost_zement"]
+margin_left = 69.0
+margin_right = 73.0
+margin_bottom = 14.0
+text = ":"
+align = 1
+
+[node name="value" type="Label" parent="InfoSide/InfoSideInner/InfoGrid/cost_grid/cost_zement"]
+margin_left = 77.0
+margin_right = 142.0
+margin_bottom = 14.0
+size_flags_horizontal = 3
+text = "0"
+align = 1
+
+[node name="hasValue" type="Label" parent="InfoSide/InfoSideInner/InfoGrid/cost_grid/cost_zement"]
+margin_left = 146.0
+margin_right = 154.0
+margin_bottom = 14.0
+text = "0"
+align = 1
+
+[node name="cost_ziegel" type="GridContainer" parent="InfoSide/InfoSideInner/InfoGrid/cost_grid"]
+margin_top = 72.0
+margin_right = 154.0
+margin_bottom = 86.0
+size_flags_horizontal = 3
+columns = 4
+
+[node name="name" type="Label" parent="InfoSide/InfoSideInner/InfoGrid/cost_grid/cost_ziegel"]
+margin_right = 65.0
+margin_bottom = 14.0
+size_flags_horizontal = 3
+text = "Ziegel"
+
+[node name="colon" type="Label" parent="InfoSide/InfoSideInner/InfoGrid/cost_grid/cost_ziegel"]
+margin_left = 69.0
+margin_right = 73.0
+margin_bottom = 14.0
+text = ":"
+align = 1
+
+[node name="value" type="Label" parent="InfoSide/InfoSideInner/InfoGrid/cost_grid/cost_ziegel"]
+margin_left = 77.0
+margin_right = 142.0
+margin_bottom = 14.0
+size_flags_horizontal = 3
+text = "0"
+align = 1
+
+[node name="hasValue" type="Label" parent="InfoSide/InfoSideInner/InfoGrid/cost_grid/cost_ziegel"]
+margin_left = 146.0
+margin_right = 154.0
+margin_bottom = 14.0
+text = "0"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GoldCounter" type="Label" parent="."]
+anchor_right = 1.0
+margin_top = 20.7655
+margin_bottom = 34.7655
+text = "XXXXX"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="pressed" from="GridContainer/BuildingsPanelButton" to="construction_panel" method="_on_BuildingsPanelButton_pressed"]
+[connection signal="pressed" from="GridContainer/BuildingsPanelButton" to="village_informations_panel" method="_on_BuildingsPanelButton_pressed"]
+[connection signal="pressed" from="GridContainer/VillageInformations" to="construction_panel" method="_on_VillageInformations_pressed"]
+[connection signal="pressed" from="GridContainer/VillageInformations" to="village_informations_panel" method="_on_VillageInformations_pressed"]
+[connection signal="pressed" from="GridContainer/TradeButton" to="." method="_on_TradeButton_pressed"]
+[connection signal="pressed" from="construction_panel/cunstruction_panel_grid/building_categories/Show_prod_buildings" to="construction_panel/cunstruction_panel_grid/production_buildings_panel/contruction_building_grid" method="_on_Show_prod_buildings_pressed"]
+[connection signal="pressed" from="construction_panel/cunstruction_panel_grid/building_categories/Show_prod_buildings" to="construction_panel/cunstruction_panel_grid/production_buildings_panel/village_building_grid" method="_on_Show_prod_buildings_pressed"]
+[connection signal="pressed" from="construction_panel/cunstruction_panel_grid/building_categories/Show_vill_buildings" to="construction_panel/cunstruction_panel_grid/production_buildings_panel/contruction_building_grid" method="_on_Show_vill_buildings_pressed"]
+[connection signal="pressed" from="construction_panel/cunstruction_panel_grid/building_categories/Show_vill_buildings" to="construction_panel/cunstruction_panel_grid/production_buildings_panel/village_building_grid" method="_on_Show_vill_buildings_pressed"]

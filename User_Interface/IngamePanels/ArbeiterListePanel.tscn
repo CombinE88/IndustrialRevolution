@@ -1,0 +1,46 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://User_Interface/UIScenes/ArbeiterListePanel.gd" type="Script" id=1]
+
+[node name="ArbeiterListePanel" type="Panel"]
+self_modulate = Color( 0.513726, 0.513726, 0.513726, 1 )
+anchor_left = 0.613
+anchor_right = 0.819
+anchor_bottom = 0.974
+margin_left = -0.712036
+margin_top = 74.0
+margin_right = -0.656067
+margin_bottom = -0.399963
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ArbeiterListePanelInner" type="Panel" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 3.0
+margin_top = 2.78978
+margin_right = -3.0
+margin_bottom = -3.41022
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ScrollContainer" type="ScrollContainer" parent="ArbeiterListePanelInner"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 1.0
+margin_top = 1.0
+margin_right = -1.0
+margin_bottom = -1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GridContainer" type="GridContainer" parent="ArbeiterListePanelInner/ScrollContainer"]
+margin_right = 203.0
+size_flags_horizontal = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}

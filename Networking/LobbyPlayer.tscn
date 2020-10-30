@@ -1,0 +1,30 @@
+[gd_scene format=2]
+
+[node name="GridContainer" type="GridContainer"]
+margin_right = 588.0
+margin_bottom = 40.0
+size_flags_horizontal = 3
+columns = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="NameLabel" type="Label" parent="."]
+margin_right = 38.0
+margin_bottom = 14.0
+size_flags_horizontal = 2
+text = "Name"
+
+[node name="IDLabel" type="Label" parent="."]
+margin_left = 197.0
+margin_right = 212.0
+margin_bottom = 14.0
+size_flags_horizontal = 2
+text = "ID"
+
+[node name="IPLabel" type="Label" parent="."]
+margin_left = 394.0
+margin_right = 407.0
+margin_bottom = 14.0
+size_flags_horizontal = 2
+text = "Ip"

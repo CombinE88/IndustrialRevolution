@@ -1,0 +1,19 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/anviltest.obj-f6f55a2c73a985fcf51871bd2c3f32f8.mesh"
+
+[deps]
+
+files=[ "res://.import/anviltest.obj-f6f55a2c73a985fcf51871bd2c3f32f8.mesh" ]
+
+source_file="res://Models/Test_Factory_A/anviltest.obj"
+dest_files=[ "res://.import/anviltest.obj-f6f55a2c73a985fcf51871bd2c3f32f8.mesh", "res://.import/anviltest.obj-f6f55a2c73a985fcf51871bd2c3f32f8.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh=true

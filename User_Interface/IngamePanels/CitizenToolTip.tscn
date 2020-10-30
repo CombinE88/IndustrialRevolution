@@ -1,0 +1,53 @@
+[gd_scene format=2]
+
+[node name="CitizenToolTipPanelBackground" type="Panel"]
+self_modulate = Color( 0.419608, 0.411765, 0.411765, 1 )
+anchor_left = -0.825
+anchor_bottom = 0.463
+margin_left = 0.0750122
+margin_right = -3.0
+margin_bottom = -0.13002
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CitizenToolTipPanelBackgroundInner" type="Panel" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 3.0
+margin_top = 3.0
+margin_right = -3.0
+margin_bottom = -3.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CitizenToolTipPanelGrid" type="GridContainer" parent="CitizenToolTipPanelBackgroundInner"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 2.52808
+margin_top = 3.0
+margin_right = -3.47192
+margin_bottom = -3.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="CitizenToolTipPanelBackgroundInner/CitizenToolTipPanelGrid"]
+margin_right = 829.0
+margin_bottom = 14.0
+text = "name"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CitizenToolTipPanelGrid2" type="GridContainer" parent="CitizenToolTipPanelBackgroundInner/CitizenToolTipPanelGrid"]
+margin_top = 18.0
+margin_right = 829.0
+margin_bottom = 265.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}

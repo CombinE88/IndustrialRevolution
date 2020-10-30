@@ -1,0 +1,19 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/cityHall.obj-fce31da407a0be68b1db363f7b07a925.mesh"
+
+[deps]
+
+files=[ "res://.import/cityHall.obj-fce31da407a0be68b1db363f7b07a925.mesh" ]
+
+source_file="res://Models/Houses/cityHall.obj"
+dest_files=[ "res://.import/cityHall.obj-fce31da407a0be68b1db363f7b07a925.mesh", "res://.import/cityHall.obj-fce31da407a0be68b1db363f7b07a925.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh=true
