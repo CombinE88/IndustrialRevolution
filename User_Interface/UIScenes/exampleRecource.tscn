@@ -27,6 +27,8 @@ func setUpRecources(_recourceValues:Array):
 func _process(delta):
 	if !visible || recourceValues == null:
 		return
+		
+	var multiplyer = Input.is_key_pressed(16777237)
 	
 	if GameData.cameraAnchor == null || GameData.cameraAnchor.activeVillage == null:
 		return
@@ -43,11 +45,28 @@ func _process(delta):
 			value = villageStock[recourceValues[0]][0]
 		
 		playerAmount.text = str(playerStock[recourceValues[0]][0])
-		sellPrice.text = str(ResourceManager.CalculateBuyPriceSpan(
-			value,
-			recourceValues[1],
-			recourceValues[2],
-			80))
+		
+		var price 
+		
+		if multiplyer:
+			price = 0
+			var getamount = min(10,playerStock[recourceValues[0]][0])
+			for i in getamount:
+				price += ResourceManager.CalculateBuyPriceSpan(
+					value-i,
+					recourceValues[1],
+					recourceValues[2],
+					75)
+			sellButton.text = \"Sell \" + str(getamount)
+		else:
+			price = ResourceManager.CalculateBuyPriceSpan(
+				value,
+				recourceValues[1],
+				recourceValues[2],
+				75)
+			sellButton.text = \"Sell 1\"
+		
+		sellPrice.text = str(price)
 		averagePrice.text = \" ( \" + str(playerStock[recourceValues[0]][1]) + \" )\"
 			
 		sellButton.disabled = false
@@ -65,11 +84,29 @@ func _process(delta):
 			value = villageStock[recourceValues[0]][0]
 			
 		cityAmount.text = str(villageStock[recourceValues[0]][0])
-		buyPrice.text = str(ResourceManager.CalculateBuyPriceSpan(
-			value,
-			recourceValues[1],
-			recourceValues[2],
-			110))
+		
+		var price 
+		
+		if multiplyer:
+			price = 0
+			var getamount = min(10,villageStock[recourceValues[0]][0])
+			for i in getamount:
+				price += ResourceManager.CalculateBuyPriceSpan(
+					value-i,
+					recourceValues[1],
+					recourceValues[2],
+					125)
+			buyButton.text = \"Buy \"+ str(getamount)
+		else:
+			price = ResourceManager.CalculateBuyPriceSpan(
+				value,
+				recourceValues[1],
+				recourceValues[2],
+				125)
+			buyButton.text = \"Buy 1\"
+		
+		buyPrice.text = str(price)
+		
 		buyButton.disabled = false
 	else:
 		cityAmount.text = \"\"
@@ -82,16 +119,16 @@ func _on_sellButton_pressed():
 	if ResourceManager.CanWithDrawRecources(GameData.cameraAnchor.activeVillage.Village_Name,
 	GameData.LocalPlayer.PlayerID,
 	recourceValues[0],
-	1):
+	int(sellButton.text)):
 		var price = int(sellPrice.text)
 		ResourceManager.WithDraw(GameData.cameraAnchor.activeVillage.Village_Name,
 			GameData.LocalPlayer.PlayerID,
 			recourceValues[0],
-			1)
+			int(sellButton.text))
 		ResourceManager.Deposit(GameData.cameraAnchor.activeVillage.Village_Name,
 			0,
 			recourceValues[0],
-			1,
+			int(sellButton.text),
 			0)
 		ResourceManager.Deposit(GameData.cameraAnchor.activeVillage.Village_Name,
 			GameData.LocalPlayer.PlayerID,
@@ -106,16 +143,16 @@ func _on_buyButton_pressed():
 	if ResourceManager.CanWithDrawRecources(GameData.cameraAnchor.activeVillage.Village_Name,
 	0,
 	recourceValues[0],
-	1):
+	int(buyButton.text)):
 		var price = int(buyPrice.text)
 		ResourceManager.WithDraw(GameData.cameraAnchor.activeVillage.Village_Name,
 			0,
 			recourceValues[0],
-			1)
+			int(buyButton.text))
 		ResourceManager.Deposit(GameData.cameraAnchor.activeVillage.Village_Name,
 			GameData.LocalPlayer.PlayerID,
 			recourceValues[0],
-			1,
+			int(buyButton.text),
 			price)
 		ResourceManager.WithDraw(GameData.cameraAnchor.activeVillage.Village_Name,
 			GameData.LocalPlayer.PlayerID,

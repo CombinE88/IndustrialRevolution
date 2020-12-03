@@ -14,7 +14,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Scripts/Actor/Actions/Action.gd"
 }, {
-"base": "KinematicBody",
+"base": "Spatial",
 "class": "Actor",
 "language": "GDScript",
 "path": "res://Scripts/Actor/Actor.gd"
@@ -43,6 +43,11 @@ _global_script_classes=[ {
 "class": "CitizenInformations",
 "language": "GDScript",
 "path": "res://Scripts/Actor/ActorParts/CitizenParts/CitizenInformations.gd"
+}, {
+"base": "Node",
+"class": "ConsumptionHandler",
+"language": "GDScript",
+"path": "res://Scripts/Scenen/Village/ConsumptionHandler.gd"
 }, {
 "base": "Object",
 "class": "CurserType",
@@ -149,6 +154,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Scripts/Scenen/Player/Player.gd"
 }, {
+"base": "Node",
+"class": "PopulationHandler",
+"language": "GDScript",
+"path": "res://Scripts/Scenen/Village/PopulationHandler.gd"
+}, {
 "base": "Part",
 "class": "ProvidesLivingSpace",
 "language": "GDScript",
@@ -158,6 +168,11 @@ _global_script_classes=[ {
 "class": "ProvidesWorkingSpace",
 "language": "GDScript",
 "path": "res://Scripts/Actor/ActorParts/BuildingParts/ProvidesWorkingSpace.gd"
+}, {
+"base": "Part",
+"class": "ResourceConsumtion",
+"language": "GDScript",
+"path": "res://Scripts/Village/VillageParts/ResourceConsumtion.gd"
 }, {
 "base": "Node",
 "class": "RoadBuilder",
@@ -207,6 +222,7 @@ _global_script_class_icons={
 "BuildingLoader": "",
 "CanWork": "",
 "CitizenInformations": "",
+"ConsumptionHandler": "",
 "CurserType": "",
 "Cursor_Handler": "",
 "DrawScreenCursor": "",
@@ -228,8 +244,10 @@ _global_script_class_icons={
 "PlaceBuildingCursor": "",
 "Placement_Ghost": "",
 "Player": "",
+"PopulationHandler": "",
 "ProvidesLivingSpace": "",
 "ProvidesWorkingSpace": "",
+"ResourceConsumtion": "",
 "RoadBuilder": "",
 "RoadNetwork": "",
 "Selectable": "",

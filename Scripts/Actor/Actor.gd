@@ -1,4 +1,4 @@
-extends KinematicBody
+extends Spatial
 
 class_name Actor
 
@@ -18,7 +18,12 @@ func _initialize(player:Player):
 func GetVillage():
 	return get_parent()
 
-func _process(delta):
+func Tick():
+	
+	for child in get_children():
+		if child.has_method("Tick"):
+			child.Tick()
+	
 	if ActionQueue.size() <= 0:
 		return
 		
@@ -38,12 +43,12 @@ func _process(delta):
 		CurrentAction.OnStart()
 		return
 		
-	HandleAction(CurrentAction, delta)
+	HandleAction(CurrentAction)
 	
-func HandleAction(action:Action, delta):
+func HandleAction(action:Action):
 	if action != null && action.ActionFinished:
 		return
-	action.ProcessAction(delta)
+	action.ProcessAction()
 	
 remote func CancleCurrentAction():
 	

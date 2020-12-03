@@ -56,6 +56,8 @@ func AddVillageToWorld(
 	#### TODO: Sync Random Patchbuilder
 	
 	$BuldingLoader.GeneratePreloadedBuildingSet(new_village,30)
+		
+	new_village.PopulateVillage()
 	
 	new_village.visible = false
 	

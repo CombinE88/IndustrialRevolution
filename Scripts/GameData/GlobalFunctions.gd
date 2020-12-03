@@ -140,6 +140,15 @@ func Patchgenerator(
 		
 	return rectangles
 
+func GetVillage(villageName:String)->Village:
+	var village = null
+	
+	for vill in GameData.Villages.keys():
+		if vill == villageName:
+			return GameData.Villages[vill]
+				
+	return null
+
 func GetPlayer(playerID:int)->Player:
 	var player = null
 	if playerID == GameData.LocalPlayer.PlayerID:
@@ -148,13 +157,31 @@ func GetPlayer(playerID:int)->Player:
 	else:
 		for pl in GameData.player.values():
 			if pl.PlayerID == playerID:
-				player = pl
-				break
+				return pl
 				
-	if player == null:
+	return null
+
+func GetActorInVillage(actorID:int,villageName:String)->Actor:
+	var actor = null
+	var village = GetVillage(villageName)
+	if village == null:
 		return null
-		
-	return player
+	
+	for act in village.ActorList:
+		if act.ActorID == actorID:
+			return act
+				
+	return null
+
+func GetActorInWorld(actorID:int)->Actor:
+	var actor = null
+	
+	for village in GameData.Villages.values():
+		for act in village.ActorList:
+			if act.ActorID == actorID:
+				return act
+	
+	return null
 
 func GetPlayerStorage(village:Village,player:Player)->StoresRecources:
 	var actorCanStore = null
@@ -177,3 +204,48 @@ func GetPlayerStorage(village:Village,player:Player)->StoresRecources:
 		return null
 		
 	return resourceStorage
+
+remote func RegisterWorkerAtWork(actorID:int,workplaceActorId:int,Workplace:String):
+	if !GlobalFunctions.IsServer():
+		rpc_id(1,"RegisterWorkerAtWork",actorID,workplaceActorId,Workplace)
+		return
+	
+	rpc("ServerRegisterWorkerAtWork",actorID,workplaceActorId,Workplace)
+	ServerRegisterWorkerAtWork(actorID,workplaceActorId,Workplace)
+
+remote func ServerRegisterWorkerAtWork(actorID:int,workplaceActorId:int,Workplace:String):
+	
+	var workActor = GetActorInWorld(actorID)
+	
+	if workActor == null:
+		return
+		
+	var workPlaceActor = GetActorInWorld(workplaceActorId)
+	
+	if workPlaceActor == null:
+		return
+		
+	var workplaces = workPlaceActor.getPartsOfType("ProvidesWorkingSpace")
+	
+	if workplaces.empty():
+		return
+		
+	var workPlace = null
+	for workplace in workplaces:
+		if workplace.JobName == Workplace:
+			workPlace = workplace
+			break
+			
+	if workPlace == null:
+		return
+	
+	var workForce = workActor.getFirstPartOrDefault("CanWork")
+	if workForce == null:
+		return
+
+	workPlace.RegisterWokring(workActor)
+	workForce.HireAtWorkplace(workPlaceActor)
+	
+	UiLibData.HireScreen.Update()
+	UiLibData.FactorySettings.Setup(workPlaceActor)
+	

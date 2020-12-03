@@ -43,7 +43,7 @@ var stadtNachSilben:Array = [
 	
 var nachnamen:Array = [
 	"Färberg", "Beckette", "Blaug", "Bergströms", "Berglunds",
-	 "Siegert", "Stein","Forst", "Kühn", "Winkler", "Langer",
+	"Siegert", "Stein","Forst", "Kühn", "Winkler", "Langer",
 	"Herrmann", "Wolf", "Geissler", "Peters", "Weiß", "Riese",
 	"Klossner","Schwarz","Braun","Schreier","Berger",
 	"Bauer","Schmidt","Schulte","Knopf","Derichs",
@@ -58,8 +58,15 @@ var faehigkeiten:Array = [
 	"Metallverarbeitung","Holzverarbeitung",
 ]
 
+var Demographie = {
+	"Adlige":15,
+	"Mittelschicht":35,
+	"Unterschicht":50
+}
+
 func _ready():
 	var CityPlayer = Player.new()
 	CityPlayer.PlayerID = 0
 	CityPlayer.PlayerName = "Stadt"
 	player[0] = CityPlayer
+	

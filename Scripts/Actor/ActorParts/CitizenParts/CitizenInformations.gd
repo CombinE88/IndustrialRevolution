@@ -2,7 +2,8 @@ extends Part
 
 class_name CitizenInformations
 
-var CitizenName
+var CitizenName:String
+var CitizenStatus:String
 
 func get_class():
 	return "CitizenInformations"
@@ -10,6 +11,9 @@ func get_class():
 func _ready():
 	if GlobalFunctions.IsServer():
 		get_name()
+
+func set_status(status:String):
+	CitizenStatus = status
 	
 remote func get_name():
 	if !GlobalFunctions.IsServer():

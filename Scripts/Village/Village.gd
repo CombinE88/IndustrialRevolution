@@ -20,27 +20,47 @@ var resourceStorage = {}
 
 ##debug migration
 var time = 0
-func _process(delta):
+func Tick():
+	for actor in ActorList:
+		actor.Tick()
+		
+	get_node("PopulationHandler").Tick()
+	get_node("ConsumptionHandler").Tick()
 	
-	time += delta
-	
-	if time>2:
-		if HasLivingSpaceAvailable():
-			var new_mobile = load("res://Scripts/Scenen/MobileActor/Actor.tscn")
-			var instanceActor = new_mobile.instance()
-			instanceActor.transform.origin = Village_Terrain.get_centerOfCell(exits[0])
-			AddActorToVillage(instanceActor)
-		time = 0
 		
 func HasLivingSpaceAvailable()->bool:
+	return GetFreeLivingSpace() > 0
+
+func GetFreeLivingSpace()->int:
+	var value = 0
 	for actor in ActorList:
 		var living = actor.getFirstPartOrDefault("ProvidesLivingSpace")
 		if living == null:
 			continue
-		if !living.isFull():
-			return true
-			
-	return false
+		value += living.LivingSpace - living.HousingActors.size()
+		
+	return value
+
+func getPopulation()->int:
+	var value = 0
+	for actor in ActorList:
+		var living = actor.getFirstPartOrDefault("ProvidesLivingSpace")
+		if living == null:
+			continue
+		value += living.HousingActors.size()
+		
+	return value	
+
+func getMaxPossiblePopulation()->int:
+	var value = 0
+	for actor in ActorList:
+		var living = actor.getFirstPartOrDefault("ProvidesLivingSpace")
+		if living == null:
+			continue
+		value += living.LivingSpace
+		
+	return value
+	
 
 func _initialize(_name:String,_worldPos:Vector2,_villageSeed:int):
 	Village_Name =_name
@@ -71,6 +91,21 @@ func InitializeFootprintHandler():
 
 func PreloadRoadNetwork(distanceBegin:int):
 	$RoadNetwork.get_node("RoadBuilder").GeneratePrerenderedRoadNetwork(Vector2(5,10),Vector2(5,10),Village_Terrain.grid,distanceBegin,villageSeed)
+
+func PopulateVillage():
+	
+	var gesamtWohnungen = getMaxPossiblePopulation()
+	var freieWohnungen = GetFreeLivingSpace()
+	
+	var prozentFreieWohungen = int(round(freieWohnungen*100/gesamtWohnungen))
+	
+	while prozentFreieWohungen > 50:
+		get_node("PopulationHandler").SpawnNewCitizen(true)
+		gesamtWohnungen = getMaxPossiblePopulation()
+		freieWohnungen = GetFreeLivingSpace()
+	
+		prozentFreieWohungen = int(round(freieWohnungen*100/gesamtWohnungen))
+	
 
 func GenerateTerrain(_grid:Vector2,_cellSize:Vector2,_noise:OpenSimplexNoise,_terrainheight:int,_renderDebug:bool = false):
 	Village_Terrain.GenerateTerrain(_grid,_cellSize,_noise,_terrainheight,_renderDebug)

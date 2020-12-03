@@ -4,7 +4,7 @@ class_name FollowPathAction
 
 var path:Array
 var target:Vector3
-var speed:int
+var speed:float
 var astar:AStar
 var nextPos:Vector3
 
@@ -13,7 +13,7 @@ func setActionParameter(actionName,actorSelf,params):
 	target = params[0]
 	mySelf = actorSelf
 
-func ProcessAction(delta):
+func ProcessAction():
 	if self.ActionFinished:
 		return
 		
@@ -26,7 +26,7 @@ func ProcessAction(delta):
 		else:
 			self.ActionFinished = true
 	#mySelf.rotation.y = direction.y
-	mySelf.move_and_slide(direction * speed, Vector3(0,1,0))
+	mySelf.global_transform.origin += direction * speed
 
 func OnStart():
 	var mobile = mySelf.getFirstPartOrDefault("Movable")

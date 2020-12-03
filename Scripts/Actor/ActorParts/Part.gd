@@ -10,3 +10,6 @@ func get_class():
 
 func Update():
 	pass
+	
+func Tick():
+	return

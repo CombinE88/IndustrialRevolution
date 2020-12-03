@@ -5,7 +5,7 @@ class_name EnterBuildingAction
 var path:Array
 var exitPath:Array
 var target
-var speed:int
+var speed:float
 var astar:AStar
 var nextPos:Vector3
 var inBuilding:bool = false
@@ -21,7 +21,7 @@ func setActionParameter(actionName,actorSelf,params):
 		self.ActionFinished = true
 	mySelf = actorSelf
 
-func ProcessAction(delta):
+func ProcessAction():
 	if self.ActionFinished:
 		return
 	
@@ -37,7 +37,7 @@ func ProcessAction(delta):
 				### #DEBUG DEBUG DEBUG
 				## Exit building right after entering it
 				OnCanceled()
-		mySelf.move_and_slide(move_vec.normalized() * speed, Vector3(0,1,0))
+		mySelf.global_transform.origin += move_vec.normalized() * speed
 	elif !inBuilding && goExit:
 		self.ActionFinished = true
 	elif goExit:
@@ -50,7 +50,7 @@ func ProcessAction(delta):
 			else:
 				self.inBuilding = false
 				self.ActionFinished = true
-		mySelf.move_and_slide(move_vec.normalized() * speed, Vector3(0,1,0))
+		mySelf.global_transform.origin += move_vec.normalized() * speed
 
 func OnStart():
 	var mobile = mySelf.getFirstPartOrDefault("Movable")
@@ -87,10 +87,10 @@ func OnCanceled():
 	if inBuilding:
 		goExit = true
 		nextPos = exitPath[0]
-		mySelf.get_node("CollisionShape").disabled = true
+		#mySelf.get_node("CollisionShape").disabled = true
 	else:
 		self.ActionFinished = true
-		mySelf.get_node("CollisionShape").disabled = false
+		#mySelf.get_node("CollisionShape").disabled = false
 	
 func OnFinished():
 	self.ActionFinished = true

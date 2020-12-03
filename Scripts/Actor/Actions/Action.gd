@@ -11,7 +11,7 @@ func setActionParameter(actionName:String,actorSelf,params:Array):
 	ActionName = actionName
 	pass
 
-func ProcessAction(delta):
+func ProcessAction():
 	pass
 	
 func OnStart():

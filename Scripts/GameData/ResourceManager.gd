@@ -9,20 +9,43 @@ var rawRecources = [
 	["Kalk",96,70],
 	["Eisenerz",24,250],
 	["Bauxiterz",32,200],
+	["Wolle",14,650],
 ]
 
 var craftMaterials = [
 	["Zement",46,220],
 	["Werkzeuge",100,350],
-	["Ziegel",75,180]
+	["Ziegel",75,180],
+	["Stoff",45,20],
+	["Seile",35,15],
+	["Eisen",20,300],
+	["Kupfer",22,350],
 ]
 
 var luxeryGoods = [
 	["Schmuck",5,1000],
 	["Möbel",8,640],
-	["Seide",10,450]
+	["Seide",10,870]
 ]
 
+var basicNeeds = [
+	["Fisch",15,35],
+	["Weizen",35,15],
+	["Roggen",37,17],
+	["Tee",45,100],
+	["Gewürze",8,350],
+	["Fleisch",5,640],
+	["Wein",50,75],
+	["Bier",100,35],
+	["Kleidung",10,450],
+]
+
+var liveStock = [
+	["Rinder",3,700],
+	["Schafe",5,650],
+	["Schweine",7,550],
+	["Pferde",3,1300]
+]
 remote func WithDraw(village:String,playerID:int,resource:String,amount:int):
 	
 	if !CanWithDrawRecources(village,playerID,resource,amount):
@@ -78,10 +101,10 @@ func CanWithDrawRecourcesBulk(villageName:String,playerID:int,resources:Dictiona
 		
 	var storage = GlobalFunctions.GetPlayerStorage(village,player)
 	
-	for res in resources.keys():		
+	for res in resources.keys():
 		if !storage.Resources.keys().has(res):
 			return false
-		if !storage.Resources[res] < resources[res]:
+		if storage.Resources[res][0] < resources[res]:
 			return false
 	
 	return true

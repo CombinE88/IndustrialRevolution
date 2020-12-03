@@ -3,7 +3,7 @@ extends Part
 class_name GeneratesRecources
 
 var ammount:int = 1
-var time:int = 20
+var time:int = 200
 var currentTime:float = 0
 var resource:String
 var started = false
@@ -25,7 +25,7 @@ func produce():
 func calculateGlobalEfficency():
 	var jobs = _self().getPartsOfType("ProvidesWorkingSpace")
 
-func _process(delta):
+func Tick():
 	if resource == null || resource.empty() || !started:
 		return
 		
@@ -37,7 +37,7 @@ func _process(delta):
 		efficencySum += job.getEfficency() * job.Weight
 	var eff:float = min(100 , max(0 , efficencySum / devider))
 		
-	currentTime += delta * eff / 100
+	currentTime += 1*eff/100
 	for job in jobList:
 		job.giveExperience()
 		

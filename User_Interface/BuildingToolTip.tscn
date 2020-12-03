@@ -29,7 +29,7 @@ func ShowAndExpandTooltip(actor:Actor):
 	if livingSpace != null:
 		get_node(\"ScrollBarContainer/VBarContainer/livingspace_information\").visible = true
 		get_node(\"ScrollBarContainer/VBarContainer/livingspace_information/max_room\").text = \"Size: \" + str(livingSpace.LivingSpace)
-		get_node(\"ScrollBarContainer/VBarContainer/livingspace_information/used_room\").text = \"Occupied: \" + str(livingSpace.HousingActos.size())
+		get_node(\"ScrollBarContainer/VBarContainer/livingspace_information/used_room\").text = \"Occupied: \" + str(livingSpace.HousingActors.size())
 		
 	var generateRecources = actor.getFirstPartOrDefault(\"GeneratesRecources\")
 	if generateRecources != null:

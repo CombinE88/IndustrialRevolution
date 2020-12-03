@@ -60,3 +60,6 @@ func getEfficency() -> int:
 		finalQuality = finalQuality / overallQuality.size()
 	
 	return filled * finalQuality
+	
+func Tick():
+	return

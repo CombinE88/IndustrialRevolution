@@ -7,4 +7,4 @@ class_name Movable
 func get_class():
 	return "Movable"
 
-var Move_Speed = 12
+var Move_Speed:float = 0.2
