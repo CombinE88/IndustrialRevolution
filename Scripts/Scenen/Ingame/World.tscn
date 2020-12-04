@@ -33,9 +33,13 @@ script = ExtResource( 7 )
 environment = ExtResource( 13 )
 
 [node name="DirectionalLight" type="DirectionalLight" parent="."]
-transform = Transform( 0.999996, 0.000441371, 0.00268775, -0.00222139, 0.70318, 0.711008, -0.00157615, -0.711011, 0.703179, 0.470375, 3.8147e-06, -0.54776 )
-light_energy = 0.5
+transform = Transform( 0.767905, 0.456645, -0.449218, -0.00222139, 0.70318, 0.711008, 0.64056, -0.544989, 0.54099, 0.470375, 3.8147e-06, -0.54776 )
+light_energy = 0.3
+light_indirect_energy = 2.03
+light_specular = 0.33
 shadow_enabled = true
+shadow_bias = 0.72
+shadow_contact = 0.21
 
 [node name="CameraAnchor" type="Spatial" parent="."]
 transform = Transform( -0.766044, -0.00165806, -0.642787, -0.00127015, 0.999999, -0.00106578, 0.642788, -1.74623e-10, -0.766044, 3.47333, 30.6842, 26.1342 )

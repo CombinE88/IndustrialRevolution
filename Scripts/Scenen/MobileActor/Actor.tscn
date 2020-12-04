@@ -6,9 +6,9 @@
 [ext_resource path="res://Scripts/Actor/ActorParts/CitizenParts/CanWork.gd" type="Script" id=4]
 [ext_resource path="res://Scripts/Actor/ActorParts/CitizenParts/CitizenInformations.gd" type="Script" id=5]
 
-[sub_resource type="CubeMesh" id=2]
+[sub_resource type="CubeMesh" id=1]
 
-[sub_resource type="CylinderMesh" id=3]
+[sub_resource type="CylinderMesh" id=2]
 
 [node name="Actor" type="Spatial"]
 script = ExtResource( 1 )
@@ -19,51 +19,51 @@ layers = 2147483649
 
 [node name="CSGMesh3" type="CSGMesh" parent="CSGCombiner"]
 transform = Transform( 0.211316, 0, 0, 0, 0.0429952, 0, 0, 0, 0.056805, -0.00348568, 0.088507, 0 )
-mesh = SubResource( 2 )
+mesh = SubResource( 1 )
 
 [node name="CSGMesh4" type="CSGMesh" parent="CSGCombiner/CSGMesh3"]
 transform = Transform( 0.289821, 0, 0, 0, 5.22015, 0.215916, 0, -0.611375, 0.959941, 0.00389983, 6.03029, -0.643788 )
-mesh = SubResource( 2 )
+mesh = SubResource( 1 )
 
 [node name="CSGMesh5" type="CSGMesh" parent="CSGCombiner/CSGMesh3/CSGMesh4"]
 transform = Transform( 3.76989, 0, 0, 0, 0.764898, -0.0898891, 0, 0.487154, 2.17323, 0, 1.66118, 0.0336457 )
-mesh = SubResource( 2 )
+mesh = SubResource( 1 )
 
 [node name="CSGMesh8" type="CSGMesh" parent="CSGCombiner/CSGMesh3/CSGMesh4/CSGMesh5"]
 transform = Transform( 0.203928, 0, 0, 0, 1.58407, 0.15583, 0, -1.58107, 0.327653, 1.20875, -0.947617, 1.49005 )
-mesh = SubResource( 2 )
+mesh = SubResource( 1 )
 
 [node name="CSGMesh7" type="CSGMesh" parent="CSGCombiner/CSGMesh3/CSGMesh4/CSGMesh5"]
 transform = Transform( 0.203928, 0, 0, 0, 1.58407, 0.15583, 0, -1.58107, 0.327653, -1.20047, -0.957731, 1.50588 )
-mesh = SubResource( 2 )
+mesh = SubResource( 1 )
 
 [node name="CSGMesh6" type="CSGMesh" parent="CSGCombiner/CSGMesh3/CSGMesh4/CSGMesh5"]
 transform = Transform( 0.457113, 0, 0, 0, 0.557015, 0, 0, 0, 0.724073, 0, 1.55666, 0 )
-mesh = SubResource( 2 )
+mesh = SubResource( 1 )
 
 [node name="CSGMesh2" type="CSGMesh" parent="CSGCombiner/CSGMesh3/CSGMesh4"]
 transform = Transform( 0.879629, 0, 0, 0, 0.294893, -0.199252, 0, 0.187814, 4.81727, -4.30841, -1.19736, -0.0950998 )
-mesh = SubResource( 2 )
+mesh = SubResource( 1 )
 
 [node name="CSGMesh11" type="CSGMesh" parent="CSGCombiner/CSGMesh3/CSGMesh4/CSGMesh2"]
 transform = Transform( -4.33115e-08, 0.990853, 4.33115e-08, 0, -4.3692e-08, 0.999555, 0.287221, 1.25548e-08, 5.48788e-16, 0.00309134, 0, 0.975402 )
-mesh = SubResource( 3 )
+mesh = SubResource( 2 )
 
 [node name="CSGMesh12" type="CSGMesh" parent="CSGCombiner/CSGMesh3/CSGMesh4/CSGMesh2"]
 transform = Transform( -4.33115e-08, 0.990853, 4.33115e-08, 0, -4.3692e-08, 0.999555, 0.287221, 1.25548e-08, 5.48788e-16, 0.00309134, 0, -0.986982 )
-mesh = SubResource( 3 )
+mesh = SubResource( 2 )
 
 [node name="CSGMesh" type="CSGMesh" parent="CSGCombiner/CSGMesh3/CSGMesh4"]
 transform = Transform( 0.879629, 0, 0, 0, 0.294893, -0.199252, 0, 0.187814, 4.81727, 4.29836, -1.19736, -0.0950998 )
-mesh = SubResource( 2 )
+mesh = SubResource( 1 )
 
 [node name="CSGMesh9" type="CSGMesh" parent="CSGCombiner/CSGMesh3/CSGMesh4/CSGMesh"]
 transform = Transform( -4.33115e-08, 0.990853, 4.33115e-08, 0, -4.3692e-08, 0.999555, 0.287221, 1.25548e-08, 5.48788e-16, 0, 0, 0.975402 )
-mesh = SubResource( 3 )
+mesh = SubResource( 2 )
 
 [node name="CSGMesh10" type="CSGMesh" parent="CSGCombiner/CSGMesh3/CSGMesh4/CSGMesh"]
 transform = Transform( -4.33115e-08, 0.990853, 4.33115e-08, 0, -4.3692e-08, 0.999555, 0.287221, 1.25548e-08, 5.48788e-16, 0, 0, -0.986982 )
-mesh = SubResource( 3 )
+mesh = SubResource( 2 )
 
 [node name="Movable" type="Spatial" parent="."]
 script = ExtResource( 2 )

@@ -16,7 +16,7 @@ func SetUpProduction(_resource:String,_ammount:int,_time:int):
 	ammount = _ammount
 	time = _time
 	
-func Update():	
+func Update():
 	started = true
 	
 func produce():

@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Scripts/Village/VillageParts/RoadBuilder.gd" type="Script" id=1]
 [ext_resource path="res://Scripts/Village/Village.gd" type="Script" id=2]
@@ -7,6 +7,8 @@
 [ext_resource path="res://Scripts/TerrainWorld.gd" type="Script" id=5]
 [ext_resource path="res://Scripts/Scenen/Village/PopulationHandler.gd" type="Script" id=6]
 [ext_resource path="res://Scripts/Scenen/Village/ConsumptionHandler.gd" type="Script" id=7]
+[ext_resource path="res://Scripts/Scenen/Village/FoilageLayer.gd" type="Script" id=8]
+[ext_resource path="res://Scripts/Scenen/Village/WorkplaceHandler.gd" type="Script" id=9]
 
 [node name="Village" type="Spatial"]
 script = ExtResource( 2 )
@@ -32,3 +34,9 @@ script = ExtResource( 6 )
 
 [node name="ConsumptionHandler" type="Node" parent="."]
 script = ExtResource( 7 )
+
+[node name="FoilageLayer" type="Node" parent="."]
+script = ExtResource( 8 )
+
+[node name="WorkplaceHandler" type="Node" parent="."]
+script = ExtResource( 9 )

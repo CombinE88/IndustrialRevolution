@@ -123,6 +123,8 @@ static func GenerateActorParts(BuildingPartsLoader:Array) -> Array:
 			povidesWork.JobName = part[1]
 			povidesWork.maxJobs = part[2]
 			povidesWork.RequiredTraits = part[3]
+			if part.size()>=5:
+				povidesWork.Weight = part[4]
 			actorParts.append(povidesWork)
 
 	return actorParts

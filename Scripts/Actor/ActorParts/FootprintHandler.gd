@@ -26,6 +26,7 @@ func Register_Footprint(actor:Actor,cellLocation:Vector2,footprint:Footprint):
 			var cellx = actor_centerCell.x - footprint.origin_x + x
 			var celly = actor_centerCell.y - footprint.origin_y + y
 			cells.append(Vector2(cellx,celly))
+			get_node("../FoilageLayer").RemoveTree(Vector2(cellx,celly))
 	Footprints[actor] = cells
 	
 	for cell in cells:
@@ -46,6 +47,7 @@ func Is_Cell_Occupied(cell:Vector2):
 func BlockCellForBuilding(cell:Vector2):
 	if(!Footprints.keys().has(cell)):
 		Footprints[cell] = [cell]
+		get_node("../FoilageLayer").RemoveTree(cell)
 	pass
 
 func Check_Footprint_can_Occupy(footprint:Footprint,cell:Vector2):

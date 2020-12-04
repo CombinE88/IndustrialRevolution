@@ -4,6 +4,7 @@ class_name Village
 
 var Village_Name:String
 var Village_Terrain:TerrainWorld
+var Village_Topography:String
 var World_Pos:Vector2
 
 var footPrintHandler
@@ -62,7 +63,8 @@ func getMaxPossiblePopulation()->int:
 	return value
 	
 
-func _initialize(_name:String,_worldPos:Vector2,_villageSeed:int):
+func _initialize(_name:String,_worldPos:Vector2,topography:String,_villageSeed:int):
+	Village_Topography = topography
 	Village_Name =_name
 	World_Pos = _worldPos
 	Village_Terrain = $TerrainWorld
@@ -92,6 +94,14 @@ func InitializeFootprintHandler():
 func PreloadRoadNetwork(distanceBegin:int):
 	$RoadNetwork.get_node("RoadBuilder").GeneratePrerenderedRoadNetwork(Vector2(5,10),Vector2(5,10),Village_Terrain.grid,distanceBegin,villageSeed)
 
+func CreateWorkingSpaces(number:int):
+	var traits = VillageTraits.Traits[Village_Topography]
+	var rng = RandomNumberGenerator.new()
+	rng.set_seed(villageSeed)
+	for i in number:
+		var randomkey = traits.keys()[rng.randi_range(0,traits.keys().size()-1)]
+		get_node("WorkplaceHandler").RegisterNewWorkSpace(traits[randomkey])
+
 func PopulateVillage():
 	
 	var gesamtWohnungen = getMaxPossiblePopulation()
@@ -106,6 +116,11 @@ func PopulateVillage():
 	
 		prozentFreieWohungen = int(round(freieWohnungen*100/gesamtWohnungen))
 	
+	get_node("WorkplaceHandler").PopulateWorkshops()
+
+func FoilageGenerator(number:int):
+	for i in number:
+		get_node("FoilageLayer").AddTree(Village_Terrain.cells.keys()[GameData.rng.randi_range(0,Village_Terrain.cells.size()-1)])
 
 func GenerateTerrain(_grid:Vector2,_cellSize:Vector2,_noise:OpenSimplexNoise,_terrainheight:int,_renderDebug:bool = false):
 	Village_Terrain.GenerateTerrain(_grid,_cellSize,_noise,_terrainheight,_renderDebug)

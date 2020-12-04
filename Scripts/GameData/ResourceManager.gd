@@ -10,9 +10,12 @@ var rawRecources = [
 	["Eisenerz",24,250],
 	["Bauxiterz",32,200],
 	["Wolle",14,650],
+	["Felle",18,350],
 ]
 
 var craftMaterials = [
+	["Bauholz",85,95],
+	["Stein",100,65],
 	["Zement",46,220],
 	["Werkzeuge",100,350],
 	["Ziegel",75,180],
@@ -29,6 +32,7 @@ var luxeryGoods = [
 ]
 
 var basicNeeds = [
+	["Pilze",45,15],
 	["Fisch",15,35],
 	["Weizen",35,15],
 	["Roggen",37,17],
@@ -38,6 +42,7 @@ var basicNeeds = [
 	["Wein",50,75],
 	["Bier",100,35],
 	["Kleidung",10,450],
+	["Milch",30,45],
 ]
 
 var liveStock = [

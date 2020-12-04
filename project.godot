@@ -79,6 +79,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Scripts/Actor/ActorParts/FactoryConstructor.gd"
 }, {
+"base": "Node",
+"class": "FoilageLayer",
+"language": "GDScript",
+"path": "res://Scripts/Scenen/Village/FoilageLayer.gd"
+}, {
 "base": "Action",
 "class": "FollowPathAction",
 "language": "GDScript",
@@ -213,6 +218,11 @@ _global_script_classes=[ {
 "class": "Village",
 "language": "GDScript",
 "path": "res://Scripts/Village/Village.gd"
+}, {
+"base": "Node",
+"class": "WorkplaceHandler",
+"language": "GDScript",
+"path": "res://Scripts/Scenen/Village/WorkplaceHandler.gd"
 } ]
 _global_script_class_icons={
 "Action": "",
@@ -229,6 +239,7 @@ _global_script_class_icons={
 "Eingang": "",
 "EnterBuildingAction": "",
 "FactoryConstructor": "",
+"FoilageLayer": "",
 "FollowPathAction": "",
 "Footprint": "",
 "FootprintHandler": "",
@@ -255,7 +266,8 @@ _global_script_class_icons={
 "TerrainWorld": "",
 "ToolTipInfo": "",
 "Valued": "",
-"Village": ""
+"Village": "",
+"WorkplaceHandler": ""
 }
 
 [application]
@@ -272,6 +284,7 @@ GlobalFunctions="*res://Scripts/GameData/GlobalFunctions.gd"
 UiLibData="*res://Scripts/GameData/UiLibData.gd"
 ActorDatabase="*res://Scripts/GameData/ActorDatabase.gd"
 ResourceManager="*res://Scripts/GameData/ResourceManager.gd"
+VillageTraits="*res://Scripts/GameData/VillageTraits.gd"
 
 [gdnative]
 
